@@ -6,4 +6,3 @@ class Foo {
 	   return "Hello, World!";
    }
 }
-?>
