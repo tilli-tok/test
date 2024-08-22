@@ -1,2 +1,1 @@
-<?php
-phpinfo();
+<a href="/task1.php">Листинг 2.2 (стр. 52)</a>
