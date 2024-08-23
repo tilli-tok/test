@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MeaningfulNames;
+namespace CleanCode\MeaningfulNames;
 
 class GuessStatisticsMessage
 {
@@ -15,7 +15,7 @@ class GuessStatisticsMessage
         return sprintf("There %s %s %s%s", $this->verb, $this->number, $candidate, $this->pluralModifier);
     }
 
-    private function createPluralDependentMessageParts($count)
+    private function createPluralDependentMessageParts(int $count)
     {
         if ($count == 0) {
             $this->thereAreNoLetters();
@@ -26,9 +26,9 @@ class GuessStatisticsMessage
         }
     }
 
-    private function thereAreManyLetters($count)
+    private function thereAreManyLetters(int $count)
     {
-        $this->number = $count;
+        $this->number = (string)$count;
         $this->verb = "are";
         $this->pluralModifier = "s";
     }
