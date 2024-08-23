@@ -18,9 +18,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Настройка рабочей директории
 WORKDIR /var/www/html
 
-COPY php.ini /usr/local/etc/php/
-COPY xdebug.ini /usr/local/etc/php/conf.d/
-
 # Копируем текущий проект в контейнер
 COPY . .
 

@@ -1,3 +1,4 @@
+version: "3"
 services:
   php:
     build:
@@ -7,7 +8,6 @@ services:
       - .:/var/www/html
     ports:
       - "9000:9000"
-      - "9003:9003"
 
   phpunit:
     image: php:8.2-cli

@@ -17,9 +17,9 @@ class GuessStatisticsMessage
 
     private function createPluralDependentMessageParts(int $count)
     {
-        if ($count == 0) {
+        if ($count === 0) {
             $this->thereAreNoLetters();
-        } elseif ($count == 1) {
+        } elseif ($count === 1) {
             $this->thereIsOneLetter();
         } else {
             $this->thereAreManyLetters($count);
