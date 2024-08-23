@@ -1,33 +1,34 @@
 <?php
+declare(strict_types=1);
 
 namespace MeaningfulNames;
 
 class GuessStatisticsMessage
 {
-    private $number;
-    private $verb;
-    private $pluralModifier;
+    private string $number;
+    private string $verb;
+    private string $pluralModifier;
 
-    public function make($candidate, $count)
+    public function make(string $candidate, int $count): string
     {
         $this->createPluralDependentMessageParts($count);
         return sprintf("There %s %s %s%s", $this->verb, $this->number, $candidate, $this->pluralModifier);
     }
 
-    private function createPluralDependentMessageParts($count)
+    private function createPluralDependentMessageParts(int $count)
     {
-        if ($count == 0) {
+        if ($count === 0) {
             $this->thereAreNoLetters();
-        } elseif ($count == 1) {
+        } elseif ($count === 1) {
             $this->thereIsOneLetter();
         } else {
             $this->thereAreManyLetters($count);
         }
     }
 
-    private function thereAreManyLetters($count)
+    private function thereAreManyLetters(int $count)
     {
-        $this->number = $count;
+        $this->number = (string)$count;
         $this->verb = "are";
         $this->pluralModifier = "s";
     }
