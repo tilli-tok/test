@@ -15,7 +15,7 @@ class GuessStatisticsMessage
         return sprintf("There %s %s %s%s", $this->verb, $this->number, $candidate, $this->pluralModifier);
     }
 
-    private function createPluralDependentMessageParts(int $count)
+    private function createPluralDependentMessageParts(int $count): void
     {
         if ($count === 0) {
             $this->thereAreNoLetters();
@@ -26,14 +26,14 @@ class GuessStatisticsMessage
         }
     }
 
-    private function thereAreManyLetters(int $count)
+    private function thereAreManyLetters(int $count): void
     {
         $this->number = (string)$count;
         $this->verb = "are";
         $this->pluralModifier = "s";
     }
 
-    private function thereIsOneLetter()
+    private function thereIsOneLetter(): void
     {
         $this->number = "1";
         $this->verb = "is";
