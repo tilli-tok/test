@@ -3,16 +3,6 @@ declare(strict_types=1);
 
 namespace CleanCode\ChapterFunctions;
 
-abstract class Employee {
-    public abstract function isPayday(): bool;
-    public abstract function calculatePay(): Money;
-    public abstract function deliverPay(Money $pay): void;
-}
-
-interface EmployeeFactory {
-    public function makeEmployee(EmployeeRecord $r): Employee;
-}
-
 class EmployeeFactoryImpl implements EmployeeFactory {
     public function makeEmployee($r): Employee
     {
@@ -33,56 +23,5 @@ class EmployeeFactoryImpl implements EmployeeFactory {
             default:
                 throw new InvalidEmployeeType($r->type);
         }*/
-    }
-}
-
-class Money {
-    public string $type;
-}
-
-class EmployeeRecord {
-    public string $type;
-}
-class CommissionedEmployee extends Employee {
-
-    public function isPayday(): bool {
-        return true;
-    }
-
-    public function calculatePay(): Money {
-        return new Money();
-    }
-
-    public function deliverPay(Money $pay): void {
-    }
-}
-
-class HourlyEmployee extends Employee {
-    public function isPayday(): bool {
-        return true;
-    }
-
-    public function calculatePay(): Money {
-        return new Money();
-    }
-
-    public function deliverPay(Money $pay): void {
-    }
-}
-
-class SalariedEmployee extends Employee {
-    public function isPayday(): bool {
-        return true;
-    }
-
-    public function calculatePay(): Money {
-        return new Money();
-    }
-
-    public function deliverPay(Money $pay): void {
-    }
-}
-class InvalidEmployeeType extends Exception {
-    public function __construct($type) {
     }
 }

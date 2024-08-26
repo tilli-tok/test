@@ -40,7 +40,7 @@ class GuessStatisticsMessage
         $this->pluralModifier = "";
     }
 
-    private function thereAreNoLetters()
+    private function thereAreNoLetters(): void
     {
         $this->number = "no";
         $this->verb = "are";

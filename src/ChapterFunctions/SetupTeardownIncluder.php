@@ -1,51 +1,38 @@
 <?php
-
 declare(strict_types=1);
 
 namespace CleanCode\ChapterFunctions;
-
-
-//namespace FitNesse\Html;
-//use FitNesse\Responders\Run\SuiteResponder;
-//use FitNesse\Wiki;
-
 /**
-package fitnesse.html;
+fitnesse.html;
 import fitnesse.responders.run.SuiteResponder;
 import fitnesse.wiki.*;
- */
-public class SetupTeardownIncluder{
+*/
+class SetupTeardownIncluder {
     private PageData $pageData;
     private bool $isSuite;
     private WikiPage $testPage;
-    private string $newPageContent;
+    private StringBuffer $newPageContent;
     private PageCrawler $pageCrawler;
 
-    /**
-     * @param PageData $pageData
-     * @param bool $isSuite
-     * @return string
-     */
- /**
-    public static function render(PageData $pageData)
+
+    public static function renderWithoutSuite(PageData $pageData): PageData
     {
-        return render($pageData);
+        return self::render($pageData);
     }
-*/
 
     public static function render(PageData $pageData, bool $isSuite = false): string
     {
-        return (new self($pageData))->renderHTML($isSuite);
+        return (new self($pageData))->performRender($isSuite);
     }
 
-    private function __construct(PageData $pageData)
+    private function SetupTeardownIncluder(PageData $pageData)
     {
         $this->pageData = $pageData;
         $this->testPage = $pageData->getWikiPage();
         $this->pageCrawler = $this->testPage->getPageCrawler();
-        $this->newPageContent = StringBuffer();
+        $this->newPageContent = new StringBuffer();
     }
-    private function renderHTML(bool $isSuite): string
+    private function performRender(bool $isSuite): string
     {
         $this->isSuite = $isSuite;
         if ($this->isTestPage()) {
@@ -83,7 +70,9 @@ public class SetupTeardownIncluder{
     }
     private function includePageContent(): void
     {
-        $this->newPageContent .= $this->pageData->getContent();
+        $this->newPageContent->append($this->pageData->getContent());
+
+
     }
     private function includeTeardownPages(): void
     {
@@ -102,7 +91,7 @@ public class SetupTeardownIncluder{
     }
     private function updatePageContent(): void
     {
-        $this->pageData->setContent($this->newPageContent);
+        $this->pageData->setContent($this->newPageContent->toString());
     }
     private function include(string $pageName, string $arg): void
     {
@@ -117,74 +106,13 @@ public class SetupTeardownIncluder{
     {
         return PageCrawlerImpl::getInheritedPage($pageName, $this->testPage);
     }
-    private function getPathNameForPage(WikiPage $page): string{
+    private function getPathNameForPage(WikiPage $page): string
+    {
         $pagePath = $this->pageCrawler->getFullPath($page);
         return PathParser::render($pagePath);
     }
     private function buildIncludeDirective(string $pagePathName, string $arg): void
     {
-        $this->newPageContent = '\n!include '.$arg.' .'.$pagePathName.'\n';
+        $this->newPageContent->append("\n!include $arg .$pagePathName\n");
     }
-
-}
-
-
-
-class PageData {
-    public function getWikiPage(): WikiPage
-    {
-        return new WikiPage();
-    }
-
-    public function getHtml(): string
-    {
-        return '<html></html>';
-    }
-
-    public function hasAttribute(string $attribute): bool
-    {
-        return true;
-    }
-
-    public function getContent(): string
-    {
-        return 'Get content';
-    }
-
-    public function setContent(string $content): void
-    {
-    }
-}
-
-class WikiPage {
-    public function getPageCrawler(): PageCrawler
-    {
-        return new PageCrawler();
-    }
-}
-class PageCrawler {
-    public function getFullPath(WikiPage $page): string
-    {
-        return '/var/www/html/path/page';
-    }
-}
-
-class PageCrawlerImpl
-{
-    public static function getInheritedPage(string $pageName, WikiPage $testPage): ?WikiPage
-    {
-        return new WikiPage();
-    }
-}
-
-class PathParser
-{
-    public static function render(string $pagePath): string
-    {
-        return $pagePath;
-    }
-}
-class SuiteResponder
-{
-    const SUITE_SETUP_NAME = 'SuiteSetUp';
 }
