@@ -1,13 +1,13 @@
 <?php
 require_once "/var/www/html/vendor/autoload.php";
 
-use CleanCode\ChapterFunctions\EmployeeFactoryImpl;
-
+use CleanCode\Employee\EmployeeFactoryImpl;
+use CleanCode\Employee\EmployeeRecord;
 
 $employeeRecords = [
-    new EmployeeRecord('COMMISSIONED', 'Name1', commission: 5),
-    new EmployeeRecord('HOURLY', 'Name2', hourly: 15),
-    new EmployeeRecord('SALARIED', 'Name3', salary: 10),
+    new EmployeeRecord('COMMISSIONED'),
+    new EmployeeRecord('HOURLY'),
+    new EmployeeRecord('SALARIED'),
 ];
 
 $factory = new EmployeeFactoryImpl();

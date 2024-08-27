@@ -7,3 +7,5 @@
 # PHPUnit
 /.phpunit.cache
 .phpunit.result.cache
+
+*.java

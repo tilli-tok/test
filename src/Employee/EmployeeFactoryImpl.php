@@ -4,24 +4,18 @@ declare(strict_types=1);
 namespace CleanCode\Employee;
 
 class EmployeeFactoryImpl implements EmployeeFactory {
-    public function makeEmployee($r): Employee
+    /**
+     * @param EmployeeRecord $r
+     * @return CommissionedEmployee|HourlyEmployee|SalariedEmployee
+     * @throws InvalidEmployeeType
+     */
+    public function makeEmployee(EmployeeRecord $r): CommissionedEmployee|HourlyEmployee|SalariedEmployee
     {
         return match ($r->type) {
-            'COMMISSIONED' => new CommissionedEmployee($r),
-            'HOURLY' => new HourlyEmployee($r),
-            'SALARIED' => new SalariedEmployee($r),
-            default => new InvalidEmployeeType($r->type),
+            EmployeeType::COMMISSIONED => new CommissionedEmployee($r),
+            EmployeeType::HOURLY => new HourlyEmployee($r),
+            EmployeeType::SALARIED => new SalariedEmployee($r),
+            default => throw new InvalidEmployeeType($r->type),
         };
-        /**
-        switch ($r->type) {
-            case 'COMMISSIONED':
-                return new CommissionedEmployee($r);
-            case 'HOURLY':
-                return new HourlyEmployee($r);
-            case 'SALARIED':
-                return new SalariedEmployee($r);
-            default:
-                throw new InvalidEmployeeType($r->type);
-        }*/
     }
 }
