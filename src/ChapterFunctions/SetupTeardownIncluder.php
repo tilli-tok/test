@@ -15,14 +15,14 @@ class SetupTeardownIncluder {
     private PageCrawler $pageCrawler;
 
 
-    public static function renderWithoutSuite(PageData $pageData): PageData
+    public static function renderFromPageData(PageData $pageData): PageData
     {
-        return self::render($pageData);
+        return self::renderFromPageDataSuite($pageData);
     }
 
-    public static function render(PageData $pageData, bool $isSuite = false): string
+    public static function renderFromPageDataSuite(PageData $pageData, bool $isSuite = false): string
     {
-        return (new self($pageData))->performRender($isSuite);
+        return (new self($pageData))->render($isSuite);
     }
 
     private function SetupTeardownIncluder(PageData $pageData)
@@ -32,7 +32,7 @@ class SetupTeardownIncluder {
         $this->pageCrawler = $this->testPage->getPageCrawler();
         $this->newPageContent = new StringBuffer();
     }
-    private function performRender(bool $isSuite): string
+    private function render(bool $isSuite): string
     {
         $this->isSuite = $isSuite;
         if ($this->isTestPage()) {
