@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace CleanCode\ChapterFunctions;
+namespace CleanCode\Employee;
 
 abstract class Employee {
     public abstract function isPayday(): bool;

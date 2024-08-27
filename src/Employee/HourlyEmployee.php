@@ -1,10 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace CleanCode\ChapterFunctions;
+namespace CleanCode\Employee;
 
-class CommissionedEmployee extends Employee {
-
+class HourlyEmployee extends Employee {
     public function isPayday(): bool {
         return true;
     }

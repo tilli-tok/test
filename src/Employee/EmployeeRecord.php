@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace CleanCode\ChapterFunctions;
+namespace CleanCode\Employee;
 
 class EmployeeRecord {
     public string $type;
