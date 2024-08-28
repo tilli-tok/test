@@ -2,8 +2,10 @@
 declare(strict_types=1);
 
 namespace CleanCode\Employee;
-class InvalidEmployeeType{
+use Exception;
+
+class InvalidEmployeeType extends Exception{
     public function __construct(EmployeeType $type) {
-        return 'Invalid Employee Type '.$type->name;
+        parent::__construct("Invalid employee type: $type->name");
     }
 }
