@@ -16,7 +16,7 @@ class PageData {
 
     public function getHtml(): string
     {
-        return '<html></html>';
+        return '<html lang=""></html>';
     }
 
     public function hasAttribute(string $attribute): bool
