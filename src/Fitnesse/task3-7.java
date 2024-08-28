@@ -1,4 +1,6 @@
-fitnesse.html;
+Перепиши код с java на php используй  типизацию и аннотацию и declare(strict_types=1);
+
+ fitnesse.html;
 import fitnesse.responders.run.SuiteResponder;
 import fitnesse.wiki.*;
 public class SetupTeardownIncluder {
