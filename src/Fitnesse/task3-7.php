@@ -2,10 +2,11 @@
 require_once "/var/www/html/vendor/autoload.php";
 
 use CleanCode\Fitnesse\SetupTeardownIncluder;
+use CleanCode\Fitnesse\PageData;
 
-$pageData = 'Text';
+$pageData = new PageData();
+$pageData->setContent('Text');
 $isSuite = true;
 
-$setupTeardown = new SetupTeardownIncluder();
-echo $setupTeardown->renderFromPageData($pageData);
-echo $setupTeardown->renderFromPageDataSuite($pageData, $isSuite);
+echo SetupTeardownIncluder::renderFromPageData($pageData);
+echo SetupTeardownIncluder::renderFromPageDataSuite($pageData, $isSuite);

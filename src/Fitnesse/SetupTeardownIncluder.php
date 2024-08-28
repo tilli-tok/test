@@ -2,36 +2,39 @@
 declare(strict_types=1);
 
 namespace CleanCode\Fitnesse;
-/**
-fitnesse.html;
-import fitnesse.responders.run.SuiteResponder;
-import fitnesse.wiki.*;
-*/
+
 class SetupTeardownIncluder {
-    private PageData $pageData;
     private bool $isSuite;
     private WikiPage $testPage;
-    private StringBuffer $newPageContent;
     private PageCrawler $pageCrawler;
+    private PageData $pageData;
+    private StringBuffer $newPageContent;
 
-
-    public static function renderFromPageData(PageData $pageData): PageData
-    {
-        return self::renderFromPageDataSuite($pageData);
-    }
-
-    public static function renderFromPageDataSuite(PageData $pageData, bool $isSuite = false): string
-    {
-        return (new self($pageData))->render($isSuite);
-    }
-
-    private function SetupTeardownIncluder(PageData $pageData)
+    private function __construct(PageData $pageData)
     {
         $this->pageData = $pageData;
         $this->testPage = $pageData->getWikiPage();
         $this->pageCrawler = $this->testPage->getPageCrawler();
         $this->newPageContent = new StringBuffer();
     }
+
+    /*
+     * @throws \Exception
+     * */
+    public static function renderFromPageData(PageData $pageData): string
+    {
+        return SetupTeardownIncluder::renderFromPageDataSuite($pageData);
+    }
+
+    /*
+     * @throws \Exception
+     * */
+    public static function renderFromPageDataSuite(PageData $pageData, bool $isSuite = false): string
+    {
+        $setupTeardown = new SetupTeardownIncluder($pageData);
+       return ($setupTeardown)->render($isSuite);
+    }
+
     private function render(bool $isSuite): string
     {
         $this->isSuite = $isSuite;
@@ -41,10 +44,16 @@ class SetupTeardownIncluder {
         return $this->pageData->getHtml();
     }
 
+    /*
+     * @throws \Exception
+     * */
     private function isTestPage(): bool
     {
         return $this->pageData->hasAttribute('Test');
     }
+    /*
+     * @throws \Exception
+     * */
     private function includeSetupAndTeardownPages(): void
     {
         $this->includeSetupPages();
@@ -52,28 +61,40 @@ class SetupTeardownIncluder {
         $this->includeTeardownPages();
         $this->updatePageContent();
     }
+    /*
+     * @throws \Exception
+     * */
     private function includeSetupPages(): void
     {
         if ($this->isSuite) {
             $this->includeSuiteSetupPage();
-            $this->includeSetupPage();
         }
-
+        $this->includeSetupPage();
     }
+    /*
+     * @throws \Exception
+     * */
     private function includeSuiteSetupPage(): void
     {
         $this->include(SuiteResponder::SUITE_SETUP_NAME, '-setup');
     }
+    /*
+     * @throws \Exception
+     * */
     private function includeSetupPage(): void
     {
         $this->include('SetUp', '-setup');
     }
+    /*
+     * @throws \Exception
+     * */
     private function includePageContent(): void
     {
         $this->newPageContent->append($this->pageData->getContent());
-
-
     }
+    /*
+     * @throws \Exception
+     * */
     private function includeTeardownPages(): void
     {
         $this->includeTeardownPage();
@@ -81,18 +102,30 @@ class SetupTeardownIncluder {
             $this->includeSuiteTeardownPage();
         }
     }
+    /*
+     * @throws \Exception
+     * */
     private function includeTeardownPage(): void
     {
         $this->include('TearDown', '-teardown');
     }
+    /*
+     * @throws \Exception
+     * */
     private function includeSuiteTeardownPage(): void
     {
         $this->include(SuiteResponder::SUITE_SETUP_NAME, '-teardown');
     }
+    /*
+     * @throws \Exception
+     * */
     private function updatePageContent(): void
     {
-        $this->pageData->setContent($this->newPageContent->toString());
+        $this->pageData->setContent($this->newPageContent->__toString());
     }
+    /*
+     * @throws \Exception
+     * */
     private function include(string $pageName, string $arg): void
     {
         $inheritedPage = $this->findInheritedPage($pageName);
@@ -102,10 +135,16 @@ class SetupTeardownIncluder {
 
         }
     }
+    /*
+     * @throws \Exception
+     * */
     private function findInheritedPage(string $pageName): ?WikiPage
     {
         return PageCrawlerImpl::getInheritedPage($pageName, $this->testPage);
     }
+    /*
+     * @throws \Exception
+     * */
     private function getPathNameForPage(WikiPage $page): string
     {
         $pagePath = $this->pageCrawler->getFullPath($page);
@@ -113,6 +152,11 @@ class SetupTeardownIncluder {
     }
     private function buildIncludeDirective(string $pagePathName, string $arg): void
     {
-        $this->newPageContent->append("\n!include $arg .$pagePathName\n");
+        $this->newPageContent
+            ->append("\n!include ")
+            ->append($arg)
+            ->append(" .")
+            ->append($pagePathName)
+            ->append("\n");
     }
 }
