@@ -22,6 +22,7 @@ class PrimePrinter
                         " Prime Numbers"
         );
 
+        $tablePrinter->setOutput(new PrintStream());
         $tablePrinter->print($primes);
     }
 }

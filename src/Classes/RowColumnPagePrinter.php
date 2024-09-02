@@ -16,7 +16,6 @@ class RowColumnPagePrinter
         $this->columnsPerPage = $columnsPerPage;
         $this->pageHeader = $pageHeader;
         $this->numbersPerPage = $rowsPerPage * $columnsPerPage;
-        $printStream = new PrintStream();
     }
 
     public function print(array $data): void
