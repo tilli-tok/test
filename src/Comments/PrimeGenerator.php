@@ -19,27 +19,27 @@ class PrimeGenerator
         if ($maxValue < 2) {
             return [];
         } else {
-            PrimeGenerator::uncrossIntegersUpTo($maxValue);
-            PrimeGenerator::crossOutMultiples();
-            PrimeGenerator::putUncrossedIntegersIntoResult();
-            return PrimeGenerator::$result;
+            self::uncrossIntegersUpTo($maxValue);
+            self::crossOutMultiples();
+            self::putUncrossedIntegersIntoResult();
+            return self::$result;
         }
     }
     private static function uncrossIntegersUpTo(int $maxValue): void
     {
-        PrimeGenerator::$crossedOut = array_fill(0, $maxValue + 1, false);
-        for ($i = 2; $i < count(PrimeGenerator::$crossedOut); $i++) {
-            PrimeGenerator::$crossedOut[$i] = false;
+        self::$crossedOut = array_fill(0, $maxValue + 1, false);
+        for ($i = 2; $i < count(self::$crossedOut); $i++) {
+            self::$crossedOut[$i] = false;
         }
     }
     private static function crossOutMultiples(): void
     {
-        $limit = PrimeGenerator::determineIterationLimit();
+        $limit = self::determineIterationLimit();
         for ($i = 2; $i <= $limit; $i++)
         {
-            if (PrimeGenerator::notCrossed($i))
+            if (self::notCrossed($i))
             {
-                PrimeGenerator::crossOutMultiplesOf($i);
+                self::crossOutMultiplesOf($i);
             }
         }
     }
@@ -48,36 +48,36 @@ class PrimeGenerator
         // Каждое кратное в массиве имеет простой множитель, больший либо равный
         // квадратному корню из размера массива. Следовательно, вычеркивать элементы,
         // кратные числам, превышающих квадратный корень, не нужно.
-        $iterationLimit = sqrt(count(PrimeGenerator::$crossedOut));
+        $iterationLimit = sqrt(count(self::$crossedOut));
         return (int) $iterationLimit;
     }
     private static function crossOutMultiplesOf(int $i): void
     {
-        for ($multiple = 2*$i; $multiple < count(PrimeGenerator::$crossedOut); $multiple += $i){
-            PrimeGenerator::$crossedOut[$multiple] = true;
+        for ($multiple = 2*$i; $multiple < count(self::$crossedOut); $multiple += $i){
+            self::$crossedOut[$multiple] = true;
         }
 
     }
     private static function notCrossed(int $i): bool
     {
-        return PrimeGenerator::$crossedOut[$i] == false;
+        return self::$crossedOut[$i] == false;
     }
     private static function putUncrossedIntegersIntoResult(): void
     {
-        $count = PrimeGenerator::numberOfUncrossedIntegers();
-        PrimeGenerator::$result = array_fill(0, $count, 0);
-        for ($j = 0, $i = 2; $i < count(PrimeGenerator::$crossedOut); $i++) {
-            if (PrimeGenerator::notCrossed($i)) {
-                PrimeGenerator::$result[$j++] = $i;
+        $count = self::numberOfUncrossedIntegers();
+        self::$result = array_fill(0, $count, 0);
+        for ($j = 0, $i = 2; $i < count(self::$crossedOut); $i++) {
+            if (self::notCrossed($i)) {
+                self::$result[$j++] = $i;
             }
         }
     }
     private static function numberOfUncrossedIntegers(): int
     {
         $count = 0;
-        for ($i = 2; $i < count(PrimeGenerator::$crossedOut); $i++)
+        for ($i = 2; $i < count(self::$crossedOut); $i++)
         {
-            if (PrimeGenerator::notCrossed($i))
+            if (self::notCrossed($i))
             {
                 $count++;
             }

@@ -8,4 +8,5 @@ enum EmployeeType
     case COMMISSIONED;
     case HOURLY;
     case SALARIED;
+    case TEST;
 }

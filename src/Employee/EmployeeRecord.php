@@ -6,5 +6,6 @@ namespace CleanCode\Employee;
 class EmployeeRecord {
     public function __construct(public EmployeeType $type)
     {
+
     }
 }

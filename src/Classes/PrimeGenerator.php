@@ -9,49 +9,49 @@ class PrimeGenerator
 
     public static function generate(int $n): array
     {
-        PrimeGenerator::$primes = array_fill(0, $n, 0);
-        PrimeGenerator::$multiplesOfPrimeFactors = [];
-        PrimeGenerator::set2AsFirstPrime();
-        PrimeGenerator::checkOddNumbersForSubsequentPrimes();
-        return PrimeGenerator::$primes;
+        self::$primes = array_fill(0, $n, 0);
+        self::$multiplesOfPrimeFactors = [];
+        self::set2AsFirstPrime();
+        self::checkOddNumbersForSubsequentPrimes();
+        return self::$primes;
     }
 
     private static function set2AsFirstPrime(): void
     {
-        PrimeGenerator::$primes[0] = 2;
-        PrimeGenerator::$multiplesOfPrimeFactors[] = 2;
+        self::$primes[0] = 2;
+        self::$multiplesOfPrimeFactors[] = 2;
     }
 
     private static function checkOddNumbersForSubsequentPrimes(): void
     {
         $primeIndex = 1;
-        for ($candidate = 3; $primeIndex < count(PrimeGenerator::$primes); $candidate += 2) {
-            if (PrimeGenerator::isPrime($candidate)) {
-                PrimeGenerator::$primes[$primeIndex++] = $candidate;
+        for ($candidate = 3; $primeIndex < count(self::$primes); $candidate += 2) {
+            if (self::isPrime($candidate)) {
+                self::$primes[$primeIndex++] = $candidate;
             }
         }
     }
 
     private static function isPrime(int $candidate): bool
     {
-        if (PrimeGenerator::isLeastRelevantMultipleOfNextLargerPrimeFactor($candidate)) {
-            PrimeGenerator::$multiplesOfPrimeFactors[] = $candidate;
+        if (self::isLeastRelevantMultipleOfNextLargerPrimeFactor($candidate)) {
+            self::$multiplesOfPrimeFactors[] = $candidate;
             return false;
         }
-        return PrimeGenerator::isNotMultipleOfAnyPreviousPrimeFactor($candidate);
+        return self::isNotMultipleOfAnyPreviousPrimeFactor($candidate);
     }
 
     private static function isLeastRelevantMultipleOfNextLargerPrimeFactor(int $candidate): bool
     {
-        $nextLargerPrimeFactor = PrimeGenerator::$primes[count(PrimeGenerator::$multiplesOfPrimeFactors)];
+        $nextLargerPrimeFactor = self::$primes[count(self::$multiplesOfPrimeFactors)];
         $leastRelevantMultiple = $nextLargerPrimeFactor * $nextLargerPrimeFactor;
         return $candidate === $leastRelevantMultiple;
     }
 
     private static function isNotMultipleOfAnyPreviousPrimeFactor(int $candidate): bool
     {
-        for ($n = 1; $n < count(PrimeGenerator::$multiplesOfPrimeFactors); $n++) {
-            if (PrimeGenerator::isMultipleOfNthPrimeFactor($candidate, $n)) {
+        for ($n = 1; $n < count(self::$multiplesOfPrimeFactors); $n++) {
+            if (self::isMultipleOfNthPrimeFactor($candidate, $n)) {
                 return false;
             }
         }
@@ -60,16 +60,16 @@ class PrimeGenerator
 
     private static function isMultipleOfNthPrimeFactor(int $candidate, int $n): bool
     {
-        return $candidate === PrimeGenerator::smallestOddNthMultipleNotLessThanCandidate($candidate, $n);
+        return $candidate === self::smallestOddNthMultipleNotLessThanCandidate($candidate, $n);
     }
 
     private static function smallestOddNthMultipleNotLessThanCandidate(int $candidate, int $n): int
     {
-        $multiple = PrimeGenerator::$multiplesOfPrimeFactors[$n];
+        $multiple = self::$multiplesOfPrimeFactors[$n];
         while ($multiple < $candidate) {
-            $multiple += 2 * PrimeGenerator::$primes[$n];
+            $multiple += 2 * self::$primes[$n];
         }
-        PrimeGenerator::$multiplesOfPrimeFactors[$n] = $multiple;
+        self::$multiplesOfPrimeFactors[$n] = $multiple;
         return $multiple;
     }
 }

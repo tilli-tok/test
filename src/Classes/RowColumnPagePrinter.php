@@ -25,7 +25,7 @@ class RowColumnPagePrinter
             $lastIndexOnPage = min($firstIndexOnPage + $this->numbersPerPage - 1, count($data) - 1);
             $this->printPageHeader($this->pageHeader, $pageNumber);
             $this->printPage($firstIndexOnPage, $lastIndexOnPage, $data);
-            $this->printStream->write("\f");
+            $this->printStream->write("\f\n");
             $pageNumber++;
         }
     }
@@ -35,7 +35,7 @@ class RowColumnPagePrinter
         $firstIndexOfLastRowOnPage = $firstIndexOnPage + $this->rowsPerPage - 1;
         for ($firstIndexInRow = $firstIndexOnPage; $firstIndexInRow <= $firstIndexOfLastRowOnPage; $firstIndexInRow++) {
             $this->printRow($firstIndexInRow, $lastIndexOnPage, $data);
-            $this->printStream->write("");
+            $this->printStream->write("\n");
         }
     }
 
@@ -52,7 +52,7 @@ class RowColumnPagePrinter
     private function printPageHeader(string $pageHeader, int $pageNumber): void
     {
         $this->printStream->write($pageHeader . " --- Page " . $pageNumber);
-        $this->printStream->write("");
+        $this->printStream->write("\n");
     }
 
     public function setOutput(PrintStream $printStream): void
