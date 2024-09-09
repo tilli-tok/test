@@ -26,7 +26,7 @@ class StringArgumentMarshaler implements ArgumentMarshaler
 
     public static function getValue(?ArgumentMarshaler $am): string
     {
-        if ($am !== null && $am instanceof StringArgumentMarshaler) {
+        if ($am instanceof StringArgumentMarshaler) {
             return $am->stringValue;
         }else{
             return '';

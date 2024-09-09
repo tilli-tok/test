@@ -1,25 +1,45 @@
 <?php
 declare(strict_types=1);
-namespace CleanCode\Сleansing;
+namespace CleanCode\Cleansing;
 
-use CleanCode\Cleansing\ArgumentMarshaler;
+use ArrayIterator;
 use Iterator;
 
 class DoubleArgumentMarshaler implements ArgumentMarshaler
 {
     private float $doubleValue = 0.0;
 
-    public function set(Iterator $currentArgument): void
+    public static function getValue(mixed $param)
     {
-        $parameter = null;
     }
 
-    public static function getValue(?ArgumentMarshaler $am): float
+    /**
+     * @param ArrayIterator|Iterator $currentArgument
+     * @throws ArgsException
+     */
+    public function set(ArrayIterator|Iterator $currentArgument): void
     {
-        if ($am !== null && $am instanceof DoubleArgumentMarshaler) {
-            return $am->doubleValue;
-        } else {
-            return 0.0;
+        $parameter = null;
+
+        try {
+            if ($currentArgument->valid()) {
+                $parameter = $currentArgument->current();
+                $this->doubleValue = (float)$parameter;
+                $currentArgument->next();
+            } else {
+                throw new ArgsException(ErrorCode::MISSING_DOUBLE);
+            }
+        } catch (\Throwable $e) {
+            if ($parameter === null) {
+                throw new ArgsException(ErrorCode::MISSING_DOUBLE);
+            }
+
+            throw new ArgsException(ErrorCode::INVALID_DOUBLE, '', $parameter);
         }
+    }
+
+    public function get(): float
+    {
+        return $this->doubleValue;
     }
 }

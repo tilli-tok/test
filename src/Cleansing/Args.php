@@ -2,9 +2,10 @@
 declare(strict_types=1);
 namespace CleanCode\Cleansing;
 
+use AllowDynamicProperties;
 use ArrayIterator;
-use CleanCode\Сleansing\DoubleArgumentMarshaler;
-use CleanCode\Сleansing\StringArrayArgumentMarshaler;
+use CleanCode\Cleansing\DoubleArgumentMarshaler;
+use CleanCode\Cleansing\StringArrayArgumentMarshaler;
 
 class Args
 {
@@ -12,16 +13,21 @@ class Args
     private array $argsFound = [];
     private ArrayIterator $currentArgument;
 
+    /**
+     * @throws ArgsException
+     */
     public function __construct(string $schema, array $args)
-        //throws ArgsException
     {
-        //marshalers = new HashMap<Character, ArgumentMarshaler>();
-        //argsFound = new HashSet<Character>();
+        //$this->marshalers = new ArgumentMarshalerCollection();
+        //$this->args = $args;
         $this->parseSchema($schema);
         $this->parseArgumentStrings($args);
     }
+
+    /**
+     * @throws ArgsException
+     */
     private function parseSchema(string $schema): void
-    //throws ArgsException
     {
         $elements = explode(',', $schema);
         foreach ($elements as $element) {
@@ -33,10 +39,10 @@ class Args
 
     /**
      * @param string $element
-     * @return BooleanArgumentMarshaler|StringArgumentMarshaler|IntegerArgumentMarshaler|DoubleArgumentMarshaler|StringArrayArgumentMarshaler
+     * @return void
      * @throws ArgsException
      */
-    private function parseSchemaElement(string $element): BooleanArgumentMarshaler|StringArgumentMarshaler|IntegerArgumentMarshaler|DoubleArgumentMarshaler|StringArrayArgumentMarshaler
+    private function parseSchemaElement(string $element): void
     {
         $elementId = $element[0];
         $elementTail = substr($element, 1);
@@ -50,7 +56,6 @@ class Args
             '[*]'   => new StringArrayArgumentMarshaler(),
             default => throw new ArgsException(ErrorCode::INVALID_ARGUMENT_FORMAT, $elementId, null)
         };
-        return $this->marshalers[$elementId];
     }
 
     /**
@@ -64,8 +69,11 @@ class Args
             throw new ArgsException(ErrorCode::INVALID_ARGUMENT_NAME, $elementId, null);
         }
     }
+
+    /**
+     * @throws ArgsException
+     */
     private function parseArgumentStrings(array $argsList): void
-    //throws ArgsException
     {
         $currentArgument = new ArrayIterator($argsList);
 
@@ -83,7 +91,6 @@ class Args
      * @throws ArgsException
      */
     private function parseArgumentCharacters(string $argChars): void
-    //throws ArgsException
     {
         for ($i = 0; $i < strlen($argChars); $i++) {
             $this->parseArgumentCharacter($argChars[$i]);

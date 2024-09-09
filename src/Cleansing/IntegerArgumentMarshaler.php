@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace CleanCode\Cleansing;
 
+use Iterator;
+
 class IntegerArgumentMarshaler implements ArgumentMarshaler
 {
     private int $intValue = 0;
@@ -11,7 +13,7 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
      * @return void
      * @throws ArgsException
      */
-    public function set(Iterator $currentArgument): void
+    public function set(\Iterator $currentArgument): void
     {
         $parameter = null;
         try {
@@ -32,7 +34,7 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
 
     public static function getValue(?ArgumentMarshaler $am): int
     {
-        if ($am !== null && $am instanceof IntegerArgumentMarshaler) {
+        if ($am instanceof IntegerArgumentMarshaler) {
             return $am->intValue;
         }else {
             return 0;

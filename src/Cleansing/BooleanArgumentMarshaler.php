@@ -15,7 +15,7 @@ class BooleanArgumentMarshaler implements ArgumentMarshaler
     }
     public static function getValue(?ArgumentMarshaler $am): bool
     {
-        if ($am !== null && $am instanceof BooleanArgumentMarshaler) {
+        if ($am instanceof BooleanArgumentMarshaler) {
             return $am->booleanValue;
         } else {
             return false;

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace CleanCode\Сleansing;
+namespace CleanCode\Cleansing;
 
 use CleanCode\Cleansing\ArgumentMarshaler;
 use Iterator;
@@ -16,7 +16,7 @@ class StringArrayArgumentMarshaler implements ArgumentMarshaler
 
     public static function getValue(?ArgumentMarshaler $am): array
     {
-        if ($am !== null && $am instanceof StringArrayArgumentMarshaler) {
+        if ($am instanceof StringArrayArgumentMarshaler) {
             return $am->stringArrayValue;
         } else {
             return [];

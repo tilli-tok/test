@@ -3,34 +3,25 @@ declare(strict_types=1);
 namespace CleanCode\Cleansing;
 
 class ArgsException extends \Exception {
+
     private string $errorArgumentId = "\0";
     private ?string $errorParameter = null;
     private ErrorCode $errorCode;
 
+    /**
+     * @param ErrorCode $errorCode
+     * @param string|null $errorArgumentId
+     * @param string|null $errorParameter
+     */
 
-    public function __construct(ErrorCode $errorCode, string $errorArgumentId, ?string $errorParameter)
+    public function __construct(ErrorCode $errorCode, ?string $errorArgumentId = null, ?string $errorParameter = null)
     {
+        parent::__construct();
         $this->errorCode = $errorCode;
         $this->errorParameter = $errorParameter;
         $this->errorArgumentId = $errorArgumentId;
-        //ArgsException::__construct($this->errorMessage());
+        return ArgsException::__construct($errorCode);
     }
-
-
-    public function argsExceptionWithMessage(string $message)
-    {
-        return ArgsException::__construct($message);
-    }
-
-   public function argsExceptionWithErrorCode(ErrorCode $errorCode): string
-   {
-       $this->errorCode = $errorCode;
-   }
-   public function argsExceptionWithErrorCodeAndParameter(ErrorCode $errorCode, string $errorParameter): string
-   {
-       $this->errorCode = $errorCode;
-       $this->errorParameter = $errorParameter;
-   }
 
     public function getErrorArgumentId(): string
     {
@@ -76,4 +67,3 @@ class ArgsException extends \Exception {
         };
     }
 }
-
