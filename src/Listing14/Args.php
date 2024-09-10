@@ -2,8 +2,8 @@
 declare(strict_types=1);
 namespace CleanCode\Listing14;
 
+use ArgsException;
 use Exception;
-use Throwable;
 
 class Args
 {
@@ -16,6 +16,8 @@ class Args
     private array $argsFound = [];
     private int $currentArgument = 0;
     private string $errorArgument = '\0';
+    private string $errorArgumentId = '\0';
+    private string $errorParameter = 'TILT';
     private ErrorCode $errorCode = ErrorCode::OK;
 
 
@@ -72,6 +74,8 @@ class Args
             $this->parseBooleanSchemaElement($elementId);
         } elseif ($this->isStringSchemaElement($elementTail)) {
             $this->parseStringSchemaElement($elementId);
+        } elseif ($this->isIntegerSchemaElement($elementTail)) {
+            $this->IntegerArgumentMarshaler($elementId);
         }
     }
 
@@ -88,7 +92,8 @@ class Args
 
     private function parseStringSchemaElement(string $elementId): void
     {
-        $this->stringArgs[$elementId] = '';
+        //$this->stringArgs[$elementId] = '';
+        $this->stringArgs[$elementId] = new StringArgumentMarshaler();
     }
 
     private function isStringSchemaElement(string $elementTail): bool
@@ -101,9 +106,17 @@ class Args
         return strlen($elementTail) === 0;
     }
 
+    private function isIntegerSchemaElement(string $elementTail): bool
+    {
+        return $elementTail === '';
+    }
     private function parseBooleanSchemaElement(string $elementId): void
     {
-        $this->booleanArgs[$elementId] = false;
+        //$this->booleanArgs[$elementId] = false;
+        $this->booleanArgs[$elementId] = new BooleanArgumentMarshaler();
+    }
+    private function parseIntegerSchemaElement(string $elementId): void {
+        $this->intArgs[$elementId] = new IntegerArgumentMarshaler();
     }
 
 
@@ -173,7 +186,8 @@ class Args
     {
         $this->currentArgument++;
         try {
-            $this->stringArgs[$argChar] = $this->args[$this->currentArgument];
+            $this->stringArgs[$argChar]->setString($this->args[$this->currentArgument]);
+            //$this->stringArgs[$argChar] = $this->args[$this->currentArgument];
         } catch (ArrayIndexOutOfBoundsException $e) {
             $this->valid = false;
             $this->errorArgument = $argChar;
@@ -187,9 +201,36 @@ class Args
 
     private function setBooleanArg(string $argChar, bool $value): void
     {
-        $this->booleanArgs[$argChar] = $value;
+        //$this->booleanArgs[$argChar] = $value;
+        //$this->booleanArgs[$argChar]->setBoolean($value);
+        $this->booleanArgs[$argChar]->set("true");
     }
 
+    /**
+     * @param string $argChar
+     * @return void
+     * @throws ArgsException
+     */
+    private function setIntArg(string $argChar): void
+    {
+        $this->currentArgument++;
+        $parameter = null;
+        try {
+            $parameter = $this->args[$this->currentArgument];
+            $this->intArgs[$argChar]->setInteger(intval($parameter));
+        } catch (ArrayIndexOutOfBoundsException $e) {
+            $this->valid = false;
+            $this->errorArgumentId = $argChar;
+            $this->errorCode = ErrorCode::MISSING_INTEGER;
+            throw new ArgsException();
+        } catch (NumberFormatException $e) {
+            $this->valid = false;
+            $this->errorArgumentId = $argChar;
+            $this->errorParameter = $parameter;
+            $this->errorCode = ErrorCode::INVALID_INTEGER;
+            throw new ArgsException();
+        }
+    }
     private function isBoolean(string $argChar): bool
     {
         return array_key_exists($argChar, $this->booleanArgs);
@@ -238,14 +279,30 @@ class Args
 
     public function getBoolean(string $arg): bool
     {
-        return $this->booleanArgs[$arg] ?? false;
+        //return $this->booleanArgs[$arg] ?? false;
+        //return !is_null($this->booleanArgs[$arg]->getBoolean());
+
+        //return $this->booleanArgs[$arg]->getBoolean();
+
+        //$am = $this->booleanArgs[$arg];
+        //return !is_null($am) && $am->getBoolean();
+
+        $am = $this->booleanArgs[$arg];
+        return $am != null && (Boolean)$am->get();
     }
     private function falseIfNull(Bool $b): bool {
         return !($b == null);
      }
     public function getString(string $arg): string
     {
-        return $this->stringArgs[$arg] ?? '';
+        //return $this->stringArgs[$arg] ?? '';
+        $am = $this->stringArgs[$arg];
+        return !is_null($am) ? $am->getString() : '';
+    }
+    public function getInt(string $arg): int
+    {
+        $am = $this->intArgs[$arg];
+        return $am == null ? 0 : $am->getInteger();
     }
     private function blankIfNull(String $s): string
     {
