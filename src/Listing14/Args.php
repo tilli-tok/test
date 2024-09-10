@@ -182,16 +182,22 @@ class Args
 
         return $set;
     }
+
+    /**
+     * @throws ArgsException
+     */
     private function setStringArg(string $argChar, string $s): void
     {
         $this->currentArgument++;
         try {
-            $this->stringArgs[$argChar]->setString($this->args[$this->currentArgument]);
             //$this->stringArgs[$argChar] = $this->args[$this->currentArgument];
+            //$this->stringArgs[$argChar]->setString($this->args[$this->currentArgument]);
+            $this->stringArgs[$argChar]->set($this->args[$this->currentArgument]);
         } catch (ArrayIndexOutOfBoundsException $e) {
             $this->valid = false;
             $this->errorArgument = $argChar;
             $this->errorCode = ErrorCode::MISSING_STRING;
+            throw new ArgsException();
         }
     }
     private function isString(string $argChar): bool
@@ -288,7 +294,7 @@ class Args
         //return !is_null($am) && $am->getBoolean();
 
         $am = $this->booleanArgs[$arg];
-        return $am != null && (Boolean)$am->get();
+        return $am != null && $am->get();
     }
     private function falseIfNull(Bool $b): bool {
         return !($b == null);
@@ -297,7 +303,9 @@ class Args
     {
         //return $this->stringArgs[$arg] ?? '';
         $am = $this->stringArgs[$arg];
-        return !is_null($am) ? $am->getString() : '';
+        //return !is_null($am) ? $am->getString() : '';
+        //return !is_null($am) ? $am->get() : '';
+        return (string)$am?->get();
     }
     public function getInt(string $arg): int
     {

@@ -5,7 +5,7 @@ namespace CleanCode\Listing14;
 //Листинг 14.11. Класс ArgumentMarshaller, присоединенный к Args.java
 abstract class ArgumentMarshaler
 {
-    protected bool $booleanValue = false;
+    private bool $booleanValue = false;
     private string $stringValue;
     private int $integerValue;
 
@@ -15,11 +15,12 @@ abstract class ArgumentMarshaler
     {
         $this->booleanValue = $value;
     }*/
-
+    //delete getBoolean
+    /**
     public function getBoolean($arg): bool
     {
         return $this->booleanValue;
-    }
+    }*/
 
     public function setString(String $s): void
     {
