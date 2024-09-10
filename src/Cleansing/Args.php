@@ -2,10 +2,7 @@
 declare(strict_types=1);
 namespace CleanCode\Cleansing;
 
-use AllowDynamicProperties;
 use ArrayIterator;
-use CleanCode\Cleansing\DoubleArgumentMarshaler;
-use CleanCode\Cleansing\StringArrayArgumentMarshaler;
 
 class Args
 {
@@ -20,6 +17,7 @@ class Args
     {
         //$this->marshalers = new ArgumentMarshalerCollection();
         //$this->args = $args;
+        $this->currentArgument = new ArrayIterator($args);
         $this->parseSchema($schema);
         $this->parseArgumentStrings($args);
     }
@@ -125,12 +123,12 @@ class Args
 
     public function nextArgument(): int
     {
-        return $this->currentArgument->nextIndex();
+        return $this->currentArgument->key();
     }
 
     public function getBoolean(string $arg): bool
     {
-        return BooleanArgumentMarshaler::getValue($this->marshalers[$arg] ?? null);
+        return BooleanArgumentMarshaler::getValue($this->marshalers[$arg]);
     }
 
     public function getString(string $arg): ?string

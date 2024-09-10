@@ -42,4 +42,13 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
     {
         return $this->doubleValue;
     }
+    public function getDouble(string $arg): float {
+        $am = $this->marshalers[$arg] ?? null;
+
+        try {
+            return $am === null ? 0.0 : (float) $am->get();
+        } catch (\Exception $e) {
+            return 0.0;
+        }
+    }
 }
