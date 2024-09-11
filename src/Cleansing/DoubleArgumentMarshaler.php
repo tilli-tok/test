@@ -3,7 +3,9 @@ declare(strict_types=1);
 namespace CleanCode\Cleansing;
 
 use ArrayIterator;
+use Exception;
 use Iterator;
+use Throwable;
 
 class DoubleArgumentMarshaler implements ArgumentMarshaler
 {
@@ -29,7 +31,7 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
             } else {
                 throw new ArgsException(ErrorCode::MISSING_DOUBLE);
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable) {
             if ($parameter === null) {
                 throw new ArgsException(ErrorCode::MISSING_DOUBLE);
             }
@@ -47,7 +49,7 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
 
         try {
             return $am === null ? 0.0 : (float) $am->get();
-        } catch (\Exception $e) {
+        } catch (Exception) {
             return 0.0;
         }
     }

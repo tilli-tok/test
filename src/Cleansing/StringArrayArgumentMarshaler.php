@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace CleanCode\Cleansing;
 
-use CleanCode\Cleansing\ArgumentMarshaler;
 use Iterator;
 
 class StringArrayArgumentMarshaler implements ArgumentMarshaler

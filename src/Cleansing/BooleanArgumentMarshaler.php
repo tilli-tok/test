@@ -9,7 +9,6 @@ class BooleanArgumentMarshaler implements ArgumentMarshaler
     private bool $booleanValue = false;
 
     public function set(Iterator $currentArgument): void
-    //throws ArgsException
     {
         $this->booleanValue = true;
     }

@@ -19,7 +19,7 @@ class StringArgumentMarshaler implements ArgumentMarshaler
         try {
             $this->stringValue = $currentArgument->current();
             $currentArgument->next();
-        } catch (UnderflowException $e) {
+        } catch (UnderflowException) {
             throw new ArgsException(ErrorCode::MISSING_STRING);
         }
     }

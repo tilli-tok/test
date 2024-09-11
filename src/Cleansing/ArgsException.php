@@ -2,9 +2,12 @@
 declare(strict_types=1);
 namespace CleanCode\Cleansing;
 
-class ArgsException extends \Exception {
+use Exception;
+
+class ArgsException extends Exception {
 
     private string $errorArgumentId = "\0";
+    /** @var string|null */
     private ?string $errorParameter = null;
     private ErrorCode $errorCode;
 
@@ -16,11 +19,10 @@ class ArgsException extends \Exception {
 
     public function __construct(ErrorCode $errorCode, ?string $errorArgumentId = null, ?string $errorParameter = null)
     {
-        parent::__construct();
         $this->errorCode = $errorCode;
         $this->errorParameter = $errorParameter;
         $this->errorArgumentId = $errorArgumentId;
-        return ArgsException::__construct($errorCode);
+        parent::__construct($this->errorMessage());
     }
 
     public function getErrorArgumentId(): string

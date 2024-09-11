@@ -15,7 +15,7 @@ class Args
      */
     public function __construct(string $schema, array $args)
     {
-        //$this->marshalers = new ArgumentMarshalerCollection();
+        //$this->marshalers = new ArgumentMarshaler();
         //$this->args = $args;
         $this->currentArgument = new ArrayIterator($args);
         $this->parseSchema($schema);

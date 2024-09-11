@@ -13,7 +13,7 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
      * @return void
      * @throws ArgsException
      */
-    public function set(\Iterator $currentArgument): void
+    public function set(Iterator $currentArgument): void
     {
         $parameter = null;
         try {

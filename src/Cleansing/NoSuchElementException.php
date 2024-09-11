@@ -2,7 +2,9 @@
 
 namespace CleanCode\Cleansing;
 
-class NoSuchElementException extends \Exception
+use Exception;
+
+class NoSuchElementException extends Exception
 {
     public function __construct(string $errorCode, $parameter = null)
     {
