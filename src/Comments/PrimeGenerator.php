@@ -18,12 +18,12 @@ class PrimeGenerator
     {
         if ($maxValue < 2) {
             return [];
-        } else {
-            self::uncrossIntegersUpTo($maxValue);
-            self::crossOutMultiples();
-            self::putUncrossedIntegersIntoResult();
-            return self::$result;
         }
+        self::uncrossIntegersUpTo($maxValue);
+        self::crossOutMultiples();
+        self::putUncrossedIntegersIntoResult();
+
+        return self::$result;
     }
     private static function uncrossIntegersUpTo(int $maxValue): void
     {
