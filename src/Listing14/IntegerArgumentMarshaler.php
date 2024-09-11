@@ -2,7 +2,6 @@
 
 namespace CleanCode\Listing14;
 
-use ArgsException;
 
 class IntegerArgumentMarshaler extends ArgumentMarshaler
 {
@@ -11,14 +10,14 @@ class IntegerArgumentMarshaler extends ArgumentMarshaler
     /**
      * @throws ArgsException
      */
-    public function set(String $s): void
+    public function set(string $s): void
     {
-        try {
-            $this->intValue = (int) $s;
-        } catch (NumberFormatException $e) {
-            throw new ArgsException();
+        if (!is_numeric($s)) {
+            throw new ArgsException(ErrorCode::INVALID_INTEGER, 'p', $s);
         }
+        $this->intValue = (int) $s;
     }
+
     public function get(): int
     {
         return $this->intValue;

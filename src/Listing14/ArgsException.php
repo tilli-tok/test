@@ -2,20 +2,9 @@
 declare(strict_types=1);
 namespace CleanCode\Listing14;
 
+use Exception;
 
-/**
- * class ArgsException extends \Exception {
- *
-* public function __construct(ErrorCode $errorCode, ?string $errorArgumentId = null, ?string $errorParameter = null)
-    * {
-        * parent::__construct();
-    * }
- *
-* }
- */
-
-
-class ArgsException extends \Exception {
+class ArgsException extends Exception {
 
     private string $errorArgumentId = "\0";
     private ?string $errorParameter = null;
@@ -29,13 +18,13 @@ class ArgsException extends \Exception {
 
     public function __construct(ErrorCode $errorCode, ?string $errorArgumentId = null, ?string $errorParameter = null)
     {
-        parent::__construct();
+
         $this->errorCode = $errorCode;
         $this->errorParameter = $errorParameter;
         $this->errorArgumentId = $errorArgumentId;
-        return \CleanCode\Cleansing\ArgsException::__construct($errorCode);
+        //return ArgsException::__construct($errorCode);
+        return parent::__construct();
     }
-
     public function getErrorArgumentId(): string
     {
         return $this->errorArgumentId;
