@@ -70,7 +70,6 @@ class Args
         $elementTail = substr($element, 1);
         $this->validateSchemaElementId($elementId);
 
-        // Проверка на тип элемента
         if ($this->isBooleanSchemaElement($elementTail)) {
             $this->marshalers[$elementId] = new BooleanArgumentMarshaler();
         } elseif ($this->isStringSchemaElement($elementTail)) {
