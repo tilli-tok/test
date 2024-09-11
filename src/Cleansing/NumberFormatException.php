@@ -1,5 +1,4 @@
 <?php
-
 namespace CleanCode\Cleansing;
 
 class NumberFormatException extends \Exception
