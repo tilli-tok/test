@@ -3,11 +3,14 @@ declare(strict_types=1);
 namespace CleanCode\Listing14;
 
 //Листинг 14.11. Класс ArgumentMarshaller, присоединенный к Args.java
-abstract class ArgumentMarshaler
+use Iterator;
+
+//abstract class ArgumentMarshaler
+interface ArgumentMarshaler
 {
-    private bool $booleanValue = false;
-    private string $stringValue;
-    private int $integerValue;
+    //private bool $booleanValue = false;
+    //private string $stringValue;
+    //private int $integerValue;
 
     //delete setBoolean
     /**
@@ -21,7 +24,7 @@ abstract class ArgumentMarshaler
     {
         return $this->booleanValue;
     }*/
-
+/**
     public function setString(String $s): void
     {
         $this->stringValue = $s;
@@ -38,9 +41,11 @@ abstract class ArgumentMarshaler
     {
         return $this->integerValue;
     }
-    public abstract function set(String $s): void;
+*/
+    public function set(Iterator $currentArgument): void;
+    //public abstract function set(string $s): void;
     //public function get(): ?object {
     //    return null;
     //}
-    public abstract function get();
+    public function get();
 }
