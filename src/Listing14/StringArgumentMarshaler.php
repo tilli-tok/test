@@ -1,8 +1,9 @@
 <?php
+
 namespace CleanCode\Listing14;
 
-use Exception;
 use ArrayIterator;
+use Exception;
 use Iterator;
 
 class StringArgumentMarshaler implements ArgumentMarshaler
@@ -14,25 +15,25 @@ class StringArgumentMarshaler implements ArgumentMarshaler
      */
     public function set(ArrayIterator|Iterator $currentArgument): void
     {
+/**
+        if (!$currentArgument->valid()) {
+            throw new ArgsException(ErrorCode::MISSING_STRING, 'x');
+        }
+
+        $parameter = $currentArgument->current();
+        $this->stringValue = (string)$parameter;
+        $currentArgument->next();*/
+
+        $parameters = null;
         try {
-            $this->stringValue = $currentArgument->current();
+            $parameter = $currentArgument->current();
+            $this->stringValue = (string)$parameter;
             $currentArgument->next();
         } catch (Exception) {
-            throw new ArgsException(ErrorCode::MISSING_STRING, null);
+            throw new ArgsException(ErrorCode::MISSING_STRING);
         }
-    }
 
-    /**
-    try {
-    $this->stringValue = $currentArgument->next();
-    } catch (NoSuchElementException $e) {
-    $errorCode = ErrorCode::MISSING_STRING;
-    throw new ArgsException($errorCode);
-    }*/
-    /**public function set(string $s): void
-    {
-        $this->stringValue = $s;
-    }*/
+    }
     public function get(): string
     {
         return $this->stringValue;

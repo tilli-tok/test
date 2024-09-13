@@ -13,7 +13,6 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
      */
     public function set(Iterator $currentArgument): void
     {
-        $parameter = null;
         try {
             $parameter = $currentArgument->current();
             $this->intValue = (int)$parameter;
@@ -26,18 +25,6 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
             }
         }
     }
-
-    /**
-     * @throws ArgsException
-     */
-    /**public function set(string $s): void
-    {
-        if (!is_numeric($s)) {
-            throw new ArgsException(ErrorCode::INVALID_INTEGER, 'p', $s);
-        }
-        $this->intValue = (int) $s;
-    }*/
-
     public function get(): int
     {
         return $this->intValue;

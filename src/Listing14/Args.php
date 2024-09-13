@@ -85,6 +85,7 @@ class Args
             $this->parseArgument($arg);
             $this->currentArgument->next();
         }
+
     }
 
     /**
@@ -122,7 +123,7 @@ class Args
     /**
      * @throws ArgsException
      */
-    private function setArgument(string $argChar): bool
+    private function setArgument(?string $argChar): bool
     {
         $m = $this->marshalers[$argChar];
 
@@ -131,6 +132,7 @@ class Args
         }
 
         try {
+            $this->currentArgument->next();
             $m->set($this->currentArgument);
             return true;
         } catch (ArgsException $e) {

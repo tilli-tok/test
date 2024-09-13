@@ -12,6 +12,7 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
     /**
      * @throws ArgsException
      */
+
     public function set(ArrayIterator|Iterator $currentArgument): void
     {
         $parameter = null;
