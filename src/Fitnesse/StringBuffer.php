@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace CleanCode\Fitnesse;
 
-class StringBuffer implements \Stringable
+use Stringable;
+
+class StringBuffer implements Stringable
 {
     private string $buffer = '';
     public function append(string $text): StringBuffer

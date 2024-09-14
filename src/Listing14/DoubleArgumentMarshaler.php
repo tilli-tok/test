@@ -1,9 +1,8 @@
 <?php
 namespace CleanCode\Listing14;
 
-use ArrayIterator;
-use Exception;
 use Iterator;
+use OutOfBoundsException;
 
 class DoubleArgumentMarshaler implements ArgumentMarshaler
 {
@@ -13,19 +12,24 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
      * @throws ArgsException
      */
 
-    public function set(ArrayIterator|Iterator $currentArgument): void
+    public function set(Iterator $currentArgument): void
     {
-        $parameter = null;
+        $parameter = $currentArgument->current();
         try {
-            $parameter = $currentArgument->current();
+            if (!$currentArgument->valid()) {
+                throw new ArgsException(ErrorCode::MISSING_DOUBLE, null);
+            }
+
+            if (!is_numeric($parameter)) {
+                throw new NumberFormatException("Invalid double format: $parameter");
+            }
+
             $this->doubleValue = (float)$parameter;
             $currentArgument->next();
-        } catch (Exception) {
-            if (empty($parameter)) {
-                throw new ArgsException(ErrorCode::MISSING_DOUBLE, null);
-            } else {
-                throw new ArgsException(ErrorCode::INVALID_DOUBLE, $parameter);
-            }
+        //} catch (OutOfBoundsException) {
+            //throw new ArgsException(ErrorCode::MISSING_DOUBLE, null);
+        } catch (NumberFormatException) {
+            throw new ArgsException(ErrorCode::INVALID_DOUBLE, null, $parameter);
         }
     }
 

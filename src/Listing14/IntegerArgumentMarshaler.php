@@ -1,8 +1,8 @@
 <?php
 namespace CleanCode\Listing14;
 
-use Exception;
 use Iterator;
+use OutOfBoundsException;
 
 class IntegerArgumentMarshaler implements ArgumentMarshaler
 {
@@ -13,16 +13,22 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
      */
     public function set(Iterator $currentArgument): void
     {
+        $parameter = $currentArgument->current();
         try {
-            $parameter = $currentArgument->current();
+            if (!$currentArgument->valid()) {
+                throw new ArgsException(ErrorCode::MISSING_INTEGER, null);
+            }
+
+            if (!is_numeric($parameter)) {
+                throw new NumberFormatException("Invalid integer format: $parameter");
+            }
+
             $this->intValue = (int)$parameter;
             $currentArgument->next();
-        } catch (Exception) {
-            if (empty($parameter)) {
-                throw new ArgsException(ErrorCode::MISSING_INTEGER, null);
-            } else {
-                throw new ArgsException(ErrorCode::INVALID_INTEGER, $parameter);
-            }
+        //} catch (OutOfBoundsException) {
+        //    throw new ArgsException(ErrorCode::MISSING_INTEGER, null);
+        } catch (NumberFormatException) {
+            throw new ArgsException(ErrorCode::INVALID_INTEGER, null, $parameter);
         }
     }
     public function get(): int

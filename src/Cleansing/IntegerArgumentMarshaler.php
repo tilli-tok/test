@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace CleanCode\Cleansing;
 
 use Iterator;
+use OutOfBoundsException;
 
 class IntegerArgumentMarshaler implements ArgumentMarshaler
 {
@@ -19,15 +20,18 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
         try {
             if ($currentArgument->valid()) {
                 $parameter = $currentArgument->current();
+                if (!is_numeric($parameter)) {
+                    throw new NumberFormatException("Invalid integer format: $parameter");
+                }
                 $this->intValue = (int)$parameter;
                 $currentArgument->next();
             } else {
                 throw new ArgsException(ErrorCode::MISSING_INTEGER);
             }
-        } catch (NoSuchElementException $e) {
+        } catch (OutOfBoundsException) {
             throw new ArgsException(ErrorCode::MISSING_INTEGER);
 
-        } catch (NumberFormatException $e) {
+        } catch (NumberFormatException) {
             throw new ArgsException(ErrorCode::INVALID_INTEGER, $parameter);
         }
     }

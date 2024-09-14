@@ -15,17 +15,10 @@ class StringArgumentMarshaler implements ArgumentMarshaler
      */
     public function set(ArrayIterator|Iterator $currentArgument): void
     {
-/**
-        if (!$currentArgument->valid()) {
-            throw new ArgsException(ErrorCode::MISSING_STRING, 'x');
-        }
-
-        $parameter = $currentArgument->current();
-        $this->stringValue = (string)$parameter;
-        $currentArgument->next();*/
-
-        $parameters = null;
-        try {
+       try {
+            if (!$currentArgument->valid()) {
+                throw new ArgsException(ErrorCode::MISSING_STRING, null);
+            }
             $parameter = $currentArgument->current();
             $this->stringValue = (string)$parameter;
             $currentArgument->next();

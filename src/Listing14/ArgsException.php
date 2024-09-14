@@ -6,7 +6,7 @@ use Exception;
 
 class ArgsException extends Exception
 {
-    private string $errorArgumentId = '\0';
+    private ?string $errorArgumentId = '\0';
     private ?string $errorParameter = 'TILT';
     private ErrorCode $errorCode;
 
@@ -15,13 +15,14 @@ class ArgsException extends Exception
      */
     public function __construct(ErrorCode $errorCode, ?string $errorArgumentId = null, ?string $errorParameter = null)
     {
+        parent::__construct($errorCode->value);
         $this->errorCode = $errorCode;
         $this->errorParameter = $errorParameter;
         $this->errorArgumentId = $errorArgumentId;
-        parent::__construct($this->errorMessage());
+        //parent::__construct($this->errorMessage());
     }
 
-    public function getErrorArgumentId(): string
+    public function getErrorArgumentId(): ?string
     {
         return $this->errorArgumentId;
     }
@@ -31,7 +32,7 @@ class ArgsException extends Exception
         $this->errorArgumentId = $errorArgumentId;
     }
 
-    public function getErrorParameter(): string
+    public function getErrorParameter(): ?string
     {
         return $this->errorParameter;
     }
@@ -68,58 +69,3 @@ class ArgsException extends Exception
         };
     }
 }
-
-/**
-class ArgsException extends Exception {
-
-    public const UNEXPECTED_ARGUMENT = 2;
-    public const INVALID_ARGUMENT_NAME = 3;
-    public const INVALID_FORMAT = 1;
-    public const MISSING_STRING = 4;
-    public const INVALID_INTEGER = 5;
-    public const MISSING_INTEGER = 6;
-    const INVALID_DOUBLE = 7;
-    const MISSING_DOUBLE = 8;
-
-    private string $errorArgumentId = "\0";
-    private string $errorParameter = "TILT";
-    private ErrorCode $errorCode;
-
-    public function __construct(string $message = "", ErrorCode $errorCode = ErrorCode::OK)
-    {
-        parent::__construct($message);
-        $this->errorCode = $errorCode;
-    }
-
-    public function getErrorArgumentId(): string
-    {
-        return $this->errorArgumentId;
-    }
-
-    public function setErrorArgumentId(string $errorArgumentId): void
-    {
-        $this->errorArgumentId = $errorArgumentId;
-    }
-
-    public function getErrorParameter(): ?string
-    {
-        return $this->errorParameter;
-    }
-
-    public function setErrorParameter(?string $errorParameter): void
-    {
-        $this->errorParameter = $errorParameter;
-    }
-
-    public function getErrorCode(): ErrorCode
-    {
-        return $this->errorCode;
-    }
-
-    public function setErrorCode(ErrorCode $errorCode): void
-    {
-        $this->errorCode = $errorCode;
-    }
-
-}
- */
