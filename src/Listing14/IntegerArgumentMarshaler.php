@@ -2,7 +2,7 @@
 namespace CleanCode\Listing14;
 
 use Iterator;
-use OutOfBoundsException;
+//use OutOfBoundsException;
 
 class IntegerArgumentMarshaler implements ArgumentMarshaler
 {

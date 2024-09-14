@@ -2,7 +2,6 @@
 namespace CleanCode\Listing14;
 
 use Iterator;
-use OutOfBoundsException;
 
 class DoubleArgumentMarshaler implements ArgumentMarshaler
 {
@@ -26,8 +25,6 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
 
             $this->doubleValue = (float)$parameter;
             $currentArgument->next();
-        //} catch (OutOfBoundsException) {
-            //throw new ArgsException(ErrorCode::MISSING_DOUBLE, null);
         } catch (NumberFormatException) {
             throw new ArgsException(ErrorCode::INVALID_DOUBLE, null, $parameter);
         }
