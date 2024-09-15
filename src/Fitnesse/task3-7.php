@@ -5,7 +5,7 @@ use CleanCode\Fitnesse\SetupTeardownIncluder;
 use CleanCode\Fitnesse\PageData;
 
 $pageData = new PageData();
-$pageData->setContent('Text');
+$pageData->setContent("\nПроверочный текст\n");
 $isSuite = true;
 
 echo SetupTeardownIncluder::renderFromPageData($pageData);
