@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace CleanCode\Employee;
 
-class EmployeeFactoryImpl implements EmployeeFactory {
+class EmployeeFactoryImpl implements EmployeeFactory
+{
     /**
-     * @param EmployeeRecord $r
-     * @return CommissionedEmployee|HourlyEmployee|SalariedEmployee
      * @throws InvalidEmployeeType
      */
-    public function makeEmployee(EmployeeRecord $r): CommissionedEmployee|HourlyEmployee|SalariedEmployee
+    public function makeEmployee(EmployeeRecord $r): Employee
     {
         return match ($r->type) {
             EmployeeType::COMMISSIONED => new CommissionedEmployee($r),
