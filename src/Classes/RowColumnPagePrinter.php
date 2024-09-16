@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
+
 namespace CleanCode\Classes;
 
 class RowColumnPagePrinter
 {
-    private int $rowsPerPage;
-    private int $columnsPerPage;
     private int $numbersPerPage;
-    private string $pageHeader;
     private PrintStream $printStream;
 
-    public function __construct(int $rowsPerPage, int $columnsPerPage, string $pageHeader)
+    public function __construct(private int $rowsPerPage,
+                                private int $columnsPerPage,
+                                private string $pageHeader)
     {
-        $this->rowsPerPage = $rowsPerPage;
-        $this->columnsPerPage = $columnsPerPage;
-        $this->pageHeader = $pageHeader;
         $this->numbersPerPage = $rowsPerPage * $columnsPerPage;
     }
 
+    /**
+     * @var int[] $data
+     */
     public function print(array $data): void
     {
         $pageNumber = 1;
@@ -25,7 +25,7 @@ class RowColumnPagePrinter
             $lastIndexOnPage = min($firstIndexOnPage + $this->numbersPerPage - 1, count($data) - 1);
             $this->printPageHeader($this->pageHeader, $pageNumber);
             $this->printPage($firstIndexOnPage, $lastIndexOnPage, $data);
-            $this->printStream->write("\f\n");
+            $this->printStream->println("\f");
             $pageNumber++;
         }
     }
@@ -35,7 +35,7 @@ class RowColumnPagePrinter
         $firstIndexOfLastRowOnPage = $firstIndexOnPage + $this->rowsPerPage - 1;
         for ($firstIndexInRow = $firstIndexOnPage; $firstIndexInRow <= $firstIndexOfLastRowOnPage; $firstIndexInRow++) {
             $this->printRow($firstIndexInRow, $lastIndexOnPage, $data);
-            $this->printStream->write("\n");
+            $this->printStream->println("\n");
         }
     }
 
@@ -44,15 +44,15 @@ class RowColumnPagePrinter
         for ($column = 0; $column < $this->columnsPerPage; $column++) {
             $index = $firstIndexInRow + $column * $this->rowsPerPage;
             if ($index <= $lastIndexOnPage) {
-                $this->printStream->write(sprintf("%10d", $data[$index]));
+                $this->printStream->format("%10d", $data[$index]);
             }
         }
     }
 
     private function printPageHeader(string $pageHeader, int $pageNumber): void
     {
-        $this->printStream->write($pageHeader . " --- Page " . $pageNumber);
-        $this->printStream->write("\n");
+        $this->printStream->println($pageHeader . " --- Page " . $pageNumber);
+        $this->printStream->println("\n");
     }
 
     public function setOutput(PrintStream $printStream): void

@@ -1,7 +1,8 @@
 <?php
+
 namespace CleanCode\Classes;
 
-enum PrimePrinterConfig : int
+enum PrimePrinterConfig: int
 {
     case NUMBER_OF_PRIMES = 1000;
     case ROWS_PER_PAGE = 50;
