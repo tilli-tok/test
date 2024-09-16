@@ -12,7 +12,13 @@ namespace CleanCode\Comments;
  */
 class PrimeGenerator
 {
+    /**
+     * @var boolean[]
+     */
     private static array $crossedOut = [];
+    /**
+     * @var int[]
+     */
     private static array $result = [];
     public static function generatePrimes(int $maxValue): array
     {
