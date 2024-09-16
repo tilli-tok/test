@@ -2,6 +2,8 @@
 namespace CleanCode\Listing14;
 
 use Iterator;
+use OutOfBoundsException;
+
 //use OutOfBoundsException;
 
 class IntegerArgumentMarshaler implements ArgumentMarshaler
@@ -20,10 +22,10 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
 
             $this->intValue = (int)$parameter;
             $currentArgument->next();
-        //} catch (OutOfBoundsException) {
-        //    throw new ArgsException(ErrorCode::MISSING_INTEGER, null);
+        } catch (OutOfBoundsException) {
+            throw new ArgsException(ErrorCode::MISSING_INTEGER);
         } catch (NumberFormatException) {
-            throw new ArgsException(ErrorCode::INVALID_INTEGER, null, $parameter);
+            throw new ArgsException(errorCode: ErrorCode::INVALID_INTEGER, errorParameter: $parameter);
         }
     }
     public function get(): int
@@ -32,12 +34,12 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
     }
 
     /**
-     * @throws ArgsException
+     * @throws OutOfBoundsException|ArgsException
      */
     private function ensureValidArgument(Iterator $currentArgument): void
     {
         if (!$currentArgument->valid()) {
-            throw new ArgsException(ErrorCode::MISSING_INTEGER, null);
+            throw new ArgsException(ErrorCode::MISSING_INTEGER);
         }
     }
 

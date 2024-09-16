@@ -11,5 +11,5 @@ enum ErrorCode: string
     case MISSING_INTEGER = 'Could not find integer parameter for -%s.';
     case MISSING_DOUBLE = 'Could not find double parameter for -%s.';
     case INVALID_INTEGER = "Argument -%s expects an integer but was '%s'.";
-    case INVALID_DOUBLE = 'Argument -%s expects a double but was -%s';
+    case INVALID_DOUBLE = "Argument -%s expects a double but was '%s'.";
 }

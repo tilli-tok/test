@@ -16,7 +16,7 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
         $parameter = $currentArgument->current();
         try {
             if (!$currentArgument->valid()) {
-                throw new ArgsException(ErrorCode::MISSING_DOUBLE, null);
+                throw new ArgsException(ErrorCode::MISSING_DOUBLE);
             }
 
             if (!is_numeric($parameter)) {
@@ -26,7 +26,7 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
             $this->doubleValue = (float)$parameter;
             $currentArgument->next();
         } catch (NumberFormatException) {
-            throw new ArgsException(ErrorCode::INVALID_DOUBLE, null, $parameter);
+            throw new ArgsException(errorCode: ErrorCode::INVALID_DOUBLE, errorParameter:$parameter);
         }
     }
 

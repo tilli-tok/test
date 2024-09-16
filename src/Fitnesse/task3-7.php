@@ -8,5 +8,11 @@ $pageData = new PageData();
 $pageData->setContent("\nПроверочный текст\n");
 $isSuite = true;
 
-echo SetupTeardownIncluder::renderFromPageData($pageData);
-echo SetupTeardownIncluder::renderFromPageDataSuite($pageData, $isSuite);
+try {
+    echo SetupTeardownIncluder::renderFromPageData($pageData);
+} catch (Exception $e) {
+}
+try {
+    echo SetupTeardownIncluder::renderFromPageDataSuite($pageData, $isSuite);
+} catch (Exception $e) {
+}

@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
-namespace CleanCode\Listing14;
 
+namespace Listing14;
+
+use CleanCode\Listing14\ArgsException;
+use CleanCode\Listing14\ErrorCode;
 use Exception;
 use PHPUnit\Framework\TestCase;
 

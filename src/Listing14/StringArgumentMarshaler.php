@@ -17,7 +17,7 @@ class StringArgumentMarshaler implements ArgumentMarshaler
     {
        try {
             if (!$currentArgument->valid()) {
-                throw new ArgsException(ErrorCode::MISSING_STRING, null);
+                throw new ArgsException(ErrorCode::MISSING_STRING);
             }
             $parameter = $currentArgument->current();
             $this->stringValue = (string)$parameter;
