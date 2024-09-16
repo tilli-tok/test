@@ -14,7 +14,7 @@ class PrintStream
 
     public function println(string $data): void
     {
-        fwrite($this->printStream, $data . '\n');
+        fwrite($this->printStream, $data . "\n");
     }
 
     public function format(string $format, mixed $value): void

@@ -9,4 +9,11 @@ namespace CleanCode\Classes;
  */
 class IntegerArrayList extends ArrayList
 {
+    public function get(int $n)
+    {
+    }
+
+    public function set(int $n, float|int|null $multiple)
+    {
+    }
 }

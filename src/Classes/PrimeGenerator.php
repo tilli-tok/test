@@ -39,7 +39,7 @@ class PrimeGenerator
     private static function isPrime(int $candidate): bool
     {
         if (self::isLeastRelevantMultipleOfNextLargerPrimeFactor($candidate)) {
-            self::$multiplesOfPrimeFactors[] = $candidate;
+            self::$multiplesOfPrimeFactors->add($candidate);
             return false;
         }
         return self::isNotMultipleOfAnyPreviousPrimeFactor($candidate);
@@ -69,11 +69,11 @@ class PrimeGenerator
 
     private static function smallestOddNthMultipleNotLessThanCandidate(int $candidate, int $n): int
     {
-        $multiple = self::$multiplesOfPrimeFactors[$n];
+        $multiple = self::$multiplesOfPrimeFactors->get($n);
         while ($multiple < $candidate) {
             $multiple += 2 * self::$primes[$n];
         }
-        self::$multiplesOfPrimeFactors[$n] = $multiple;
+        self::$multiplesOfPrimeFactors->set($n,$multiple);
         return $multiple;
     }
 }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace CleanCode\Classes;
 
-class RowColumnPagePrinter
+readonly class RowColumnPagePrinter
 {
     private int $numbersPerPage;
     private PrintStream $printStream;
@@ -35,7 +35,7 @@ class RowColumnPagePrinter
         $firstIndexOfLastRowOnPage = $firstIndexOnPage + $this->rowsPerPage - 1;
         for ($firstIndexInRow = $firstIndexOnPage; $firstIndexInRow <= $firstIndexOfLastRowOnPage; $firstIndexInRow++) {
             $this->printRow($firstIndexInRow, $lastIndexOnPage, $data);
-            $this->printStream->println("\n");
+            $this->printStream->println("");
         }
     }
 
@@ -52,7 +52,7 @@ class RowColumnPagePrinter
     private function printPageHeader(string $pageHeader, int $pageNumber): void
     {
         $this->printStream->println($pageHeader . " --- Page " . $pageNumber);
-        $this->printStream->println("\n");
+        $this->printStream->println("");
     }
 
     public function setOutput(PrintStream $printStream): void
