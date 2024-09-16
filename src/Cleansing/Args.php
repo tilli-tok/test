@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
+
 namespace CleanCode\Cleansing;
 
 use ArrayIterator;
 
 class Args
 {
-    private array $marshalers= [];
+    private array $marshalers = [];
     private array $argsFound = [];
     private ArrayIterator $currentArgument;
 
@@ -47,11 +48,11 @@ class Args
         $this->validateSchemaElementId($elementId);
 
         $this->marshalers[$elementId] = match ($elementTail) {
-            ''      => new BooleanArgumentMarshaler(),
-            '*'     => new StringArgumentMarshaler(),
-            '#'     => new IntegerArgumentMarshaler(),
-            '##'    => new DoubleArgumentMarshaler(),
-            '[*]'   => new StringArrayArgumentMarshaler(),
+            '' => new BooleanArgumentMarshaler(),
+            '*' => new StringArgumentMarshaler(),
+            '#' => new IntegerArgumentMarshaler(),
+            '##' => new DoubleArgumentMarshaler(),
+            '[*]' => new StringArrayArgumentMarshaler(),
             default => throw new ArgsException(ErrorCode::INVALID_ARGUMENT_FORMAT, $elementId, null)
         };
     }
