@@ -17,6 +17,10 @@ class PageData {
     {
         return '<html lang=""></html>';
     }
+
+    /**
+     * @throws \Exception
+     * */
     public function hasAttribute(string $attribute): bool
     {
         return true;
