@@ -19,7 +19,7 @@ class PageData
 
     public function getHtml(): string
     {
-        return '<html lang=""></html>';
+        return "<html lang=''>" . htmlspecialchars($this->content) . "</html>\n\n";
     }
 
     /**
@@ -27,7 +27,7 @@ class PageData
      * */
     public function hasAttribute(string $attribute): bool
     {
-        return true;
+        return $this->attributes[$attribute] ?? false;
     }
 
     public function getContent(): string

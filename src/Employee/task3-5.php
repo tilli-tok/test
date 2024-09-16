@@ -17,6 +17,9 @@ $factory = new EmployeeFactoryImpl();
 foreach ($employeeRecords as $record) {
     try {
         $employee = $factory->makeEmployee($record);
+        $pay = $employee->calculatePay();
+        $employee->deliverPay($pay);
     } catch (InvalidEmployeeType $e) {
+        echo "Ошибка: " . $e->getMessage();
     }
 }

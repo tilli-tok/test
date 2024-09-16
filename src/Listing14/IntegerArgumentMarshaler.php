@@ -15,13 +15,8 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
     {
         $parameter = $currentArgument->current();
         try {
-            if (!$currentArgument->valid()) {
-                throw new ArgsException(ErrorCode::MISSING_INTEGER, null);
-            }
-
-            if (!is_numeric($parameter)) {
-                throw new NumberFormatException("Invalid integer format: $parameter");
-            }
+            $this->ensureValidArgument($currentArgument);
+            $this->validateNumericParameter($parameter);
 
             $this->intValue = (int)$parameter;
             $currentArgument->next();
@@ -34,5 +29,25 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
     public function get(): int
     {
         return $this->intValue;
+    }
+
+    /**
+     * @throws ArgsException
+     */
+    private function ensureValidArgument(Iterator $currentArgument): void
+    {
+        if (!$currentArgument->valid()) {
+            throw new ArgsException(ErrorCode::MISSING_INTEGER, null);
+        }
+    }
+
+    /**
+     * @throws NumberFormatException
+     */
+    private function validateNumericParameter(string $parameter): void
+    {
+        if (!is_numeric($parameter)) {
+            throw new NumberFormatException("Invalid numeric format: $parameter");
+        }
     }
 }
