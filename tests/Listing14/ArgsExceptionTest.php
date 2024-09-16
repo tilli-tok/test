@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
-namespace CleanCode\Listing14;
+namespace Listing14;
 
+use CleanCode\Listing14\ArgsException;
+use CleanCode\Listing14\ErrorCode;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -12,7 +14,7 @@ class ArgsExceptionTest extends TestCase
      */
     public function testUnexpectedMessage(): void
     {
-        $e = new ArgsException(ErrorCode::UNEXPECTED_ARGUMENT, 'x', null);
+        $e = new ArgsException(ErrorCode::UNEXPECTED_ARGUMENT, 'x');
         $this->assertEquals("Argument -x unexpected.", $e->errorMessage());
     }
 
@@ -21,7 +23,7 @@ class ArgsExceptionTest extends TestCase
      */
     public function testMissingStringMessage(): void
     {
-        $e = new ArgsException(ErrorCode::MISSING_STRING, 'x', null);
+        $e = new ArgsException(ErrorCode::MISSING_STRING, 'x');
         $this->assertEquals("Could not find string parameter for -x.", $e->errorMessage());
     }
 
@@ -39,7 +41,7 @@ class ArgsExceptionTest extends TestCase
      */
     public function testMissingIntegerMessage(): void
     {
-        $e = new ArgsException(ErrorCode::MISSING_INTEGER, 'x', null);
+        $e = new ArgsException(ErrorCode::MISSING_INTEGER, 'x');
         $this->assertEquals("Could not find integer parameter for -x.", $e->errorMessage());
     }
 
@@ -57,7 +59,7 @@ class ArgsExceptionTest extends TestCase
      */
     public function testMissingDoubleMessage(): void
     {
-        $e = new ArgsException(ErrorCode::MISSING_DOUBLE, 'x', null);
+        $e = new ArgsException(ErrorCode::MISSING_DOUBLE, 'x');
         $this->assertEquals("Could not find double parameter for -x.", $e->errorMessage());
     }
 }

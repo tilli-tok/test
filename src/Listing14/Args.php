@@ -1,26 +1,35 @@
 <?php
 declare(strict_types=1);
+
 namespace CleanCode\Listing14;
 
 use ArrayIterator;
+use CleanCode\Listing14\Marshaler\ArgumentMarshaler;
+use CleanCode\Listing14\Marshaler\Argument\BooleanArgument;
+use CleanCode\Listing14\Marshaler\Argument\DoubleArgument;
+use CleanCode\Listing14\Marshaler\Argument\IntegerArgument;
+use CleanCode\Listing14\Marshaler\Argument\StringArgument;
+use Ds\Map;
+use Ds\Set;
 use Exception;
 use Iterator;
 
 class Args
 {
-    private string $schema;
-    private array $marshalers = [];
-    private array $argsFound = [];
     private ?Iterator $currentArgument = null;
-    private array $argsList;
 
     /**
+     * @param string[] $argsList
+     * @param Map<string, ArgumentMarshaler> $marshalers
+     * @param Set<string> $argsFound
      * @throws ArgsException
      */
-    public function __construct(string $schema, array $args)
+    public function __construct(
+        readonly private string $schema,
+        readonly private array $argsList,
+        private Map $marshalers = new Map([]),
+        private Set $argsFound = new Set())
     {
-        $this->schema = $schema;
-        $this->argsList = $args;
         $this->parse();
     }
 
@@ -55,11 +64,11 @@ class Args
 
         $this->validateSchemaElementId($elementId);
 
-        match ($elementTail) {
-            '' => $this->marshalers[$elementId] = new BooleanArgumentMarshaler(),
-            '*' => $this->marshalers[$elementId] = new StringArgumentMarshaler(),
-            '#' => $this->marshalers[$elementId] = new IntegerArgumentMarshaler(),
-            '##' => $this->marshalers[$elementId] = new DoubleArgumentMarshaler(),
+        $this->marshalers[$elementId] = match ($elementTail) {
+            '' => new BooleanArgument(),
+            '*' => new StringArgument(),
+            '#' => new IntegerArgument(),
+            '##' => new DoubleArgument(),
             default => throw new ArgsException(ErrorCode::INVALID_FORMAT, $elementId, $elementTail),
         };
     }
@@ -70,7 +79,7 @@ class Args
     private function validateSchemaElementId(string $elementId): void
     {
         if (!ctype_alpha($elementId)) {
-            throw new ArgsException(ErrorCode::INVALID_ARGUMENT_NAME, $elementId, null);
+            throw new ArgsException(ErrorCode::INVALID_ARGUMENT_NAME, $elementId);
         }
     }
 
@@ -116,7 +125,7 @@ class Args
         if ($this->setArgument($argChar)) {
             $this->argsFound[] = $argChar;
         } else {
-            throw new ArgsException(ErrorCode::UNEXPECTED_ARGUMENT, $argChar, null);
+            throw new ArgsException(ErrorCode::UNEXPECTED_ARGUMENT, $argChar);
         }
     }
 
@@ -125,11 +134,10 @@ class Args
      */
     private function setArgument(?string $argChar): bool
     {
-        $m = $this->marshalers[$argChar];
-
-        if ($m === null) {
+        if(!$this->marshalers->hasKey($argChar)){
             return false;
         }
+        $m = $this->marshalers->get($argChar);
 
         try {
             $this->currentArgument->next();
@@ -148,31 +156,28 @@ class Args
 
     public function usage(): string
     {
-        if(!empty($this->schema)){
-            return "-[".$this->schema."]";
-        }else{
+        if (!empty($this->schema)) {
+            return "-[" . $this->schema . "]";
+        } else {
             return "";
         }
     }
 
     public function getBoolean(string $arg): bool
     {
-        $am = $this->marshalers[$arg];
-        //$b = false;
+        $am = $this->marshalers->get($arg);
         try {
             return $am !== null && $am->get();
         } catch (Exception) {
-            //$b = false;
+            return false;
         }
-        //return $b;
-        return false;
     }
 
     public function getString(string $arg): string
     {
-        $am = $this->marshalers[$arg];
+        $am = $this->marshalers->get($arg);
         try {
-            return $am == null ? "" : (string) $am->get();
+            return $am == null ? "" : (string)$am->get();
         } catch (Exception) {
             return "";
         }
@@ -180,9 +185,9 @@ class Args
 
     public function getInt(string $arg): int
     {
-        $am = $this->marshalers[$arg];
+        $am = $this->marshalers->get($arg);
         try {
-            return $am == null ? 0 : (int) $am->get();
+            return $am == null ? 0 : (int)$am->get();
         } catch (Exception) {
             return 0;
         }
@@ -190,9 +195,9 @@ class Args
 
     public function getDouble(string $arg): float
     {
-        $am = $this->marshalers[$arg];
+        $am = $this->marshalers->get($arg);
         try {
-            return $am == null ? 0 : (float) $am->get();
+            return $am == null ? 0 : (float)$am->get();
         } catch (Exception) {
             return 0.0;
         }
@@ -200,6 +205,6 @@ class Args
 
     public function has(string $arg): bool
     {
-        return in_array($arg, $this->argsFound,true);
+        return $this->argsFound->contains($arg);
     }
 }
