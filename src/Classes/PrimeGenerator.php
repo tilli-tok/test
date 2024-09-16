@@ -1,16 +1,23 @@
 <?php
 declare(strict_types=1);
+
 namespace CleanCode\Classes;
 
 class PrimeGenerator
 {
+    /**
+     * @var int[]
+     */
     private static array $primes = [];
-    private static array $multiplesOfPrimeFactors = [];
+    private static IntegerArrayList $multiplesOfPrimeFactors;
 
+    /**
+     * TODO: Ошибка в примере из книги, указано protected
+     */
     public static function generate(int $n): array
     {
         self::$primes = array_fill(0, $n, 0);
-        self::$multiplesOfPrimeFactors = [];
+        self::$multiplesOfPrimeFactors = new IntegerArrayList();
         self::set2AsFirstPrime();
         self::checkOddNumbersForSubsequentPrimes();
         return self::$primes;
@@ -19,7 +26,7 @@ class PrimeGenerator
     private static function set2AsFirstPrime(): void
     {
         self::$primes[0] = 2;
-        self::$multiplesOfPrimeFactors[] = 2;
+        self::$multiplesOfPrimeFactors->add(2);
     }
 
     private static function checkOddNumbersForSubsequentPrimes(): void
@@ -43,14 +50,14 @@ class PrimeGenerator
 
     private static function isLeastRelevantMultipleOfNextLargerPrimeFactor(int $candidate): bool
     {
-        $nextLargerPrimeFactor = self::$primes[count(self::$multiplesOfPrimeFactors)];
+        $nextLargerPrimeFactor = self::$primes[self::$multiplesOfPrimeFactors->size()];
         $leastRelevantMultiple = $nextLargerPrimeFactor * $nextLargerPrimeFactor;
         return $candidate === $leastRelevantMultiple;
     }
 
     private static function isNotMultipleOfAnyPreviousPrimeFactor(int $candidate): bool
     {
-        for ($n = 1; $n < count(self::$multiplesOfPrimeFactors); $n++) {
+        for ($n = 1; $n < self::$multiplesOfPrimeFactors->size(); $n++) {
             if (self::isMultipleOfNthPrimeFactor($candidate, $n)) {
                 return false;
             }

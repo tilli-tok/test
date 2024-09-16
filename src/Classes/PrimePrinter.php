@@ -1,19 +1,22 @@
 <?php
 declare(strict_types=1);
+
 namespace CleanCode\Classes;
 
 class PrimePrinter
 {
+    private const int NUMBER_OF_PRIMES = 1000;
+    private const int ROWS_PER_PAGE = 50;
+    private const int COLUMNS_PER_PAGE = 4;
 
     public static function main(): void
     {
-        $primes = PrimeGenerator::generate(PrimePrinterConfig::NUMBER_OF_PRIMES->value);
+        $primes = PrimeGenerator::generate(self::NUMBER_OF_PRIMES);
 
         $tablePrinter = new RowColumnPagePrinter(
-            PrimePrinterConfig::ROWS_PER_PAGE->value,
-            PrimePrinterConfig::COLUMNS_PER_PAGE->value,
-                        "The First " . PrimePrinterConfig::NUMBER_OF_PRIMES->value .
-                        " Prime Numbers"
+            self::ROWS_PER_PAGE,
+            self:: COLUMNS_PER_PAGE,
+            "The First " . self::NUMBER_OF_PRIMES . " Prime Numbers"
         );
 
         $tablePrinter->setOutput(new PrintStream());
