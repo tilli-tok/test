@@ -12,7 +12,6 @@ class PrimePrinter
     public static function main(): void
     {
         $primes = PrimeGenerator::generate(self::NUMBER_OF_PRIMES);
-
         $tablePrinter = new RowColumnPagePrinter(
             self::ROWS_PER_PAGE,
             self:: COLUMNS_PER_PAGE,

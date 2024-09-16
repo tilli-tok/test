@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace CleanCode\Classes;
 
+use Exception;
+use Traversable;
+
 /**
  * @template T
- * @implements \IteratorAggregate<T>
  */
-abstract class ArrayList
+abstract class ArrayList implements \IteratorAggregate, \Countable
 {
     /**
      * @var T[]
@@ -27,4 +29,16 @@ abstract class ArrayList
     {
         return count($this->elements);
     }
+
+    public function getIterator(): Traversable
+    {
+        return new \ArrayIterator($this->elements);
+    }
+
+    public function count(): int
+    {
+        return count($this->elements);
+    }
+
+
 }

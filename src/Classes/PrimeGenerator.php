@@ -18,6 +18,9 @@ class PrimeGenerator
     {
         self::$primes = array_fill(0, $n, 0);
         self::$multiplesOfPrimeFactors = new IntegerArrayList();
+        foreach (self::$multiplesOfPrimeFactors as $i => $value) {
+            self::$multiplesOfPrimeFactors[$i] = 0;
+        }
         self::set2AsFirstPrime();
         self::checkOddNumbersForSubsequentPrimes();
         return self::$primes;
