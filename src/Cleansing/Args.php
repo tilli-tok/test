@@ -4,20 +4,24 @@ declare(strict_types=1);
 namespace CleanCode\Cleansing;
 
 use ArrayIterator;
+use Ds\Map;
+use Ds\Set;
 
 class Args
 {
-    private array $marshalers = [];
-    private array $argsFound = [];
     private ArrayIterator $currentArgument;
 
     /**
+     * @param Map<string, ArgumentMarshaler> $marshalers
+     * @param Set<string> $argsFound
      * @throws ArgsException
      */
-    public function __construct(string $schema, array $args)
-    {
-        //$this->marshalers = new ArgumentMarshaler();
-        //$this->args = $args;
+    public function __construct(
+        string $schema,
+        array $args,
+        private Map $marshalers = new Map(),
+        private Set $argsFound = new Set()
+    ) {
         $this->currentArgument = new ArrayIterator($args);
         $this->parseSchema($schema);
         $this->parseArgumentStrings($args);
@@ -37,8 +41,6 @@ class Args
     }
 
     /**
-     * @param string $element
-     * @return void
      * @throws ArgsException
      */
     private function parseSchemaElement(string $element): void
@@ -58,8 +60,6 @@ class Args
     }
 
     /**
-     * @param string $elementId
-     * @return void
      * @throws ArgsException
      */
     private function validateSchemaElementId(string $elementId): void
@@ -103,7 +103,7 @@ class Args
      */
     private function parseArgumentCharacter(string $argChar): void
     {
-        $m = $this->marshalers[$argChar] ?? null;
+        $m = $this->marshalers->get($argChar);
         if ($m === null) {
             throw new ArgsException(ErrorCode::UNEXPECTED_ARGUMENT, $argChar, null);
         } else {
