@@ -18,10 +18,11 @@ class ComparisonCompactorChange
     {
     }
 
-    public function formatCompactedComparison(string $message): string
+    public function formatCompactedComparison(?string $message = null): string
     {
         $compactExpected = $this->expected;
         $compactActual = $this->actual;
+
         if ($this->shouldBeCompacted()) {
             $this->findCommonPrefixAndSuffix();
             $compactExpected = $this->compact($this->expected);
@@ -67,11 +68,11 @@ class ComparisonCompactorChange
 
     private function findCommonPrefix(): void
     {
-        $prefixIndex = 0;
+        $this->prefixLength = 0;
         $end = min(strlen($this->expected), strlen($this->actual));
 
-        for (; $prefixIndex < $end; $prefixIndex++) {
-            if ($this->expected[$prefixIndex] !== $this->actual[$prefixIndex]) {
+        for (; $this->prefixLength < $end; $this->prefixLength++) {
+            if ($this->expected[$this->prefixLength] !== $this->actual[$this->prefixLength]) {
                 break;
             }
         }
