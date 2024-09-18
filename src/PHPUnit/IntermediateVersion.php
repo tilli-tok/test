@@ -8,8 +8,8 @@ class IntermediateVersion
     private const ELLIPSIS = "...";
     private const DELTA_END = "]";
     private const DELTA_START = "[";
-    private int $prefix = 0;
-    private int $suffix = 0;
+    private int $prefixIndex = 0;
+    private int $suffixIndex = 0;
     private string $compactExpected;
     private string $compactActual;
 
@@ -34,11 +34,26 @@ class IntermediateVersion
 }
     private function compactExpectedAndActual(): void
     {
-        $this->findCommonPrefix();
-        $this->findCommonSuffix();
-
+        //$prefixIndex = $this->findCommonPrefix();
+        //$this->suffixIndex = $this->findCommonSuffix($prefixIndex);
+        $this->findCommonPrefixAndSuffix();
         $this->compactExpected = $this->compactString($this->expected);
         $this->compactActual = $this->compactString($this->actual);
+    }
+
+    private function findCommonPrefixAndSuffix(): void
+    {
+        $this->findCommonPrefix();
+        $expectedSuffix = strlen($this->expected) - 1;
+        $actualSuffix = strlen($this->actual) - 1;
+
+        for (; $actualSuffix >= $this->prefixIndex && $expectedSuffix >= $this->prefixIndex;
+               $actualSuffix--, $expectedSuffix--) {
+            if ($this->expected[$expectedSuffix] !== $this->actual[$actualSuffix]) {
+                break;
+            }
+        }
+        $this->suffixIndex =  strlen($this->expected) - $expectedSuffix;
     }
     private function canBeCompacted(): bool
     {
@@ -46,8 +61,8 @@ class IntermediateVersion
     }
     private function compactString(string $source): string
     {
-        $start = $this->prefix;
-        $length = strlen($source) - $this->suffix + 1;
+        $start = $this->prefixIndex;
+        $length = strlen($source) - $this->suffixIndex + 1;
 
         $subst = $this->substring($source, $start, $length);
 
@@ -55,11 +70,11 @@ class IntermediateVersion
             $subst .
             self::DELTA_END;
 
-        if ($this->prefix > 0) {
+        if ($this->prefixIndex > 0) {
             $result = $this->computeCommonPrefix() . $result;
         }
 
-        if ($this->suffix > 0) {
+        if ($this->suffixIndex > 0) {
             $result .= $this->computeCommonSuffix();
         }
 
@@ -69,46 +84,34 @@ class IntermediateVersion
 
     private function findCommonPrefix(): void
     {
-        $this->prefix = 0;
+
+        $this->prefixIndex = 0;
         $end = min(strlen($this->expected), strlen($this->actual));
 
-        for (; $this->prefix < $end; $this->prefix++) {
-            if ($this->expected[$this->prefix] !== $this->actual[$this->prefix]) {
+        for (; $this->prefixIndex < $end; $this->prefixIndex++) {
+            if ($this->expected[$this->prefixIndex] !== $this->actual[$this->prefixIndex]) {
                 break;
             }
         }
     }
 
-    private function findCommonSuffix(): void
-    {
-        $expectedSuffix = strlen($this->expected) - 1;
-        $actualSuffix = strlen($this->actual) - 1;
-
-        for (; $actualSuffix >= $this->prefix && $expectedSuffix >= $this->prefix;
-               $actualSuffix--, $expectedSuffix--) {
-            if ($this->expected[$expectedSuffix] !== $this->actual[$actualSuffix]) {
-                break;
-            }
-        }
-        $this->suffix = strlen($this->expected) - $expectedSuffix;
-    }
 
     private function computeCommonPrefix(): string
     {
-        return ($this->prefix > $this->contextLength ? self::ELLIPSIS : "") .
+        return ($this->prefixIndex > $this->contextLength ? self::ELLIPSIS : "") .
             $this->substring($this->expected,
-                max(0, $this->prefix - $this->contextLength),
-                $this->prefix);
+                max(0, $this->prefixIndex - $this->contextLength),
+                $this->prefixIndex);
 
     }
 
     private function computeCommonSuffix(): string
     {
-        $end = min(strlen($this->expected) - $this->suffix + 1 + $this->contextLength,
+        $end = min(strlen($this->expected) - $this->suffixIndex + 1 + $this->contextLength,
             strlen($this->expected));
 
-        return $this->substring($this->expected, strlen($this->expected) - $this->suffix + 1, $end) .
-            (strlen($this->expected) - $this->suffix + 1 < strlen($this->expected) -
+        return $this->substring($this->expected, strlen($this->expected) - $this->suffixIndex + 1, $end) .
+            (strlen($this->expected) - $this->suffixIndex + 1 < strlen($this->expected) -
             $this->contextLength ? self::ELLIPSIS : "");
     }
 
@@ -130,4 +133,5 @@ class IntermediateVersion
 
         return substr($str, $start);
     }
+
 }
