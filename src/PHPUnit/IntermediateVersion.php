@@ -10,6 +10,8 @@ class IntermediateVersion
     private const DELTA_START = "[";
     private int $prefix = 0;
     private int $suffix = 0;
+    private string $compactExpected;
+    private string $compactActual;
 
     public function __construct(
         private readonly int     $contextLength,
@@ -21,22 +23,22 @@ class IntermediateVersion
     public function compact(string $message): string
     {
         if ($this->canBeCompacted()) {
+            $this->compactExpectedAndActual();
 
-            $this->findCommonPrefix();
-            $this->findCommonSuffix();
-
-            $compactExpected = $this->compactString($this->expected);
-            $compactActual = $this->compactString($this->actual);
-            return $this->format($message, $compactExpected, $compactActual);
+            return $this->format($message, $this->compactExpected, $this->compactActual);
 
         }else{
             return $this->format($message, $this->expected, $this->actual);
 
         }
 }
-    private function shouldNotCompact(): bool
+    private function compactExpectedAndActual(): void
     {
-        return $this->expected === null || $this->actual === null || $this->areStringsEqual();
+        $this->findCommonPrefix();
+        $this->findCommonSuffix();
+
+        $this->compactExpected = $this->compactString($this->expected);
+        $this->compactActual = $this->compactString($this->actual);
     }
     private function canBeCompacted(): bool
     {
