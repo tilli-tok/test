@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace CleanCode\PHPUnit;
 
-class IntermediateVersion
-{
+class IntermediateVersionOld
 
+{
     private const ELLIPSIS = "...";
     private const DELTA_END = "]";
     private const DELTA_START = "[";
+    private int $suffixIndex = 0;
     private string $compactExpected;
     private string $compactActual;
     private int $prefixLength = 0;
-    private int $suffixLength;
 
     public function __construct(
         private readonly int     $contextLength,
@@ -46,7 +46,7 @@ class IntermediateVersion
     private function compactString(string $source): string
     {
         $start = $this->prefixLength;
-        $length = strlen($source) - $this->suffixLength;
+        $length = strlen($source) - $this->suffixIndex + 1;
 
         $subst = $this->substring($source, $start, $length);
 
@@ -58,7 +58,7 @@ class IntermediateVersion
             $result = $this->computeCommonPrefix() . $result;
         }
 
-        if ($this->suffixLength > 0) {
+        if ($this->suffixIndex > 0) {
             $result .= $this->computeCommonSuffix();
         }
 
@@ -82,26 +82,27 @@ class IntermediateVersion
     private function findCommonPrefixAndSuffix(): void
     {
         $this->findCommonPrefix();
-        $this->suffixLength = 0;
+        $suffixLength = 1;
 
-        for (; !$this->suffixOverlapsPrefix($this->suffixLength); $this->suffixLength++) {
-            if ($this->charFromEnd($this->expected, $this->suffixLength)
-                !== $this->charFromEnd($this->actual, $this->suffixLength)) {
+        for (; !$this->suffixOverlapsPrefix($suffixLength); $suffixLength++) {
+            if ($this->charFromEnd($this->expected, $suffixLength)
+                !== $this->charFromEnd($this->actual, $suffixLength)) {
                 break;
             }
         }
+        $this->suffixIndex = $suffixLength;
     }
 
     private function charFromEnd(string $expected, int $i): string
     {
-        $e = strlen($expected) - $i - 1;
+        $e = strlen($expected) - $i;
         return $expected[$e];
     }
 
     private function suffixOverlapsPrefix(int $suffixLength): bool
     {
-        return strlen($this->actual) - $suffixLength <= $this->prefixLength ||
-            strlen($this->expected) - $suffixLength <= $this->prefixLength;
+        return strlen($this->actual) - $suffixLength < $this->prefixLength ||
+            strlen($this->expected) - $suffixLength < $this->prefixLength;
     }
 
     private function computeCommonPrefix(): string
@@ -115,13 +116,12 @@ class IntermediateVersion
 
     private function computeCommonSuffix(): string
     {
-        $expectedLength = strlen($this->expected);
-        $remainingLength = $expectedLength - $this->suffixLength;
+        $end = min(strlen($this->expected) - $this->suffixIndex + 1 + $this->contextLength,
+            strlen($this->expected));
 
-        $end = min($expectedLength - $this->suffixLength + $this->contextLength, $expectedLength);
-
-        return $this->substring($this->expected, $remainingLength, $end) .
-            ($remainingLength < $expectedLength - $this->contextLength ? self::ELLIPSIS : "");
+        return $this->substring($this->expected, strlen($this->expected) - $this->suffixIndex + 1, $end) .
+            (strlen($this->expected) - $this->suffixIndex + 1 < strlen($this->expected) -
+            $this->contextLength ? self::ELLIPSIS : "");
     }
 
     private function areStringsEqual(): bool
