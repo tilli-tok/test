@@ -5,14 +5,15 @@ namespace CleanCode\PHPUnit;
 
 class IntermediateVersion
 {
+
     private const ELLIPSIS = "...";
     private const DELTA_END = "]";
     private const DELTA_START = "[";
-    private int $prefixIndex = 0;
+    //private int $prefixIndex = 0;
     private int $suffixIndex = 0;
     private string $compactExpected;
     private string $compactActual;
-    private int $prefixLength=0;
+    private int $prefixLength = 0;
 
     public function __construct(
         private readonly int     $contextLength,
@@ -25,19 +26,14 @@ class IntermediateVersion
     {
         if ($this->canBeCompacted()) {
             $this->compactExpectedAndActual();
-
             return $this->format($message, $this->compactExpected, $this->compactActual);
-
         } else {
             return $this->format($message, $this->expected, $this->actual);
-
         }
     }
 
     private function compactExpectedAndActual(): void
     {
-        //$prefixIndex = $this->findCommonPrefix();
-        //$this->suffixIndex = $this->findCommonSuffix($prefixIndex);
         $this->findCommonPrefixAndSuffix();
         $this->compactExpected = $this->compactString($this->expected);
         $this->compactActual = $this->compactString($this->actual);
@@ -50,7 +46,7 @@ class IntermediateVersion
 
     private function compactString(string $source): string
     {
-        $start = $this->prefixIndex;
+        $start = $this->prefixLength;
         $length = strlen($source) - $this->suffixIndex + 1;
 
         $subst = $this->substring($source, $start, $length);
@@ -59,7 +55,7 @@ class IntermediateVersion
             $subst .
             self::DELTA_END;
 
-        if ($this->prefixIndex > 0) {
+        if ($this->prefixLength > 0) {
             $result = $this->computeCommonPrefix() . $result;
         }
 
@@ -74,11 +70,11 @@ class IntermediateVersion
     private function findCommonPrefix(): void
     {
 
-        $this->prefixIndex = 0;
+        $this->prefixLength = 0;
         $end = min(strlen($this->expected), strlen($this->actual));
 
-        for (; $this->prefixIndex < $end; $this->prefixIndex++) {
-            if ($this->expected[$this->prefixIndex] !== $this->actual[$this->prefixIndex]) {
+        for (; $this->prefixLength < $end; $this->prefixLength++) {
+            if ($this->expected[$this->prefixLength] !== $this->actual[$this->prefixLength]) {
                 break;
             }
         }
@@ -97,22 +93,25 @@ class IntermediateVersion
         }
         $this->suffixIndex = $suffixLength;
     }
+
     private function charFromEnd(string $expected, int $i): string
     {
-        $e = strlen($expected)-$i;
+        $e = strlen($expected) - $i;
         return $expected[$e];
     }
-    private function suffixOverlapsPrefix(int $suffixLength):bool {
+
+    private function suffixOverlapsPrefix(int $suffixLength): bool
+    {
         return strlen($this->actual) - $suffixLength < $this->prefixLength ||
             strlen($this->expected) - $suffixLength < $this->prefixLength;
     }
 
     private function computeCommonPrefix(): string
     {
-        return ($this->prefixIndex > $this->contextLength ? self::ELLIPSIS : "") .
+        return ($this->prefixLength > $this->contextLength ? self::ELLIPSIS : "") .
             $this->substring($this->expected,
-                max(0, $this->prefixIndex - $this->contextLength),
-                $this->prefixIndex);
+                max(0, $this->prefixLength - $this->contextLength),
+                $this->prefixLength);
 
     }
 
@@ -133,7 +132,8 @@ class IntermediateVersion
 
     private function format(?string $message, ?string $fExpected, ?string $fActual): string
     {
-        return trim(sprintf('%s expected:<%s> but was:<%s>', $message, $fExpected ?? 'null', $fActual ?? 'null'));
+        return trim(sprintf('%s expected:<%s> but was:<%s>',
+            $message, $fExpected ?? 'null', $fActual ?? 'null'));
     }
 
     function substring(string $str, int $start, int $end = null): string
@@ -144,5 +144,4 @@ class IntermediateVersion
 
         return substr($str, $start);
     }
-
 }
