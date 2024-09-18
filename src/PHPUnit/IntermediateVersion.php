@@ -20,21 +20,28 @@ class IntermediateVersion
 
     public function compact(string $message): string
     {
-        if ($this->shouldNotCompact()) {
-            return $this->format($message, $this->expected, $this->actual);
-        }
-        $this->findCommonPrefix();
-        $this->findCommonSuffix();
+        if ($this->canBeCompacted()) {
 
-        $expected = $this->compactString($this->expected);
-        $actual = $this->compactString($this->actual);
-        return $this->format($message, $expected, $actual);
-    }
+            $this->findCommonPrefix();
+            $this->findCommonSuffix();
+
+            $compactExpected = $this->compactString($this->expected);
+            $compactActual = $this->compactString($this->actual);
+            return $this->format($message, $compactExpected, $compactActual);
+
+        }else{
+            return $this->format($message, $this->expected, $this->actual);
+
+        }
+}
     private function shouldNotCompact(): bool
     {
         return $this->expected === null || $this->actual === null || $this->areStringsEqual();
     }
-
+    private function canBeCompacted(): bool
+    {
+        return $this->expected !== null && $this->actual !== null && !$this->areStringsEqual();
+    }
     private function compactString(string $source): string
     {
         $start = $this->prefix;
