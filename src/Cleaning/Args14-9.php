@@ -2,7 +2,7 @@
 declare(strict_types=1);
 //namespace CleanCode\Cleaning;
 
-use CleanCode\Listing14\StringBuffer;
+use CleanCode\Cleaning\StringBuffer;
 
 class Args
 {

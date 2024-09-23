@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace CleanCode\Fitnesse;
 
-use Stringable;
-
-class StringBuffer implements Stringable
+class StringBuffer
 {
     private string $buffer = '';
 

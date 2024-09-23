@@ -125,10 +125,11 @@ class ComparisonCompactorChange
 
     private function format(?string $message, ?string $fExpected, ?string $fActual): string
     {
-        return trim(sprintf('%s expected:<%s> but was:<%s>', $message, $fExpected ?? 'null', $fActual ?? 'null'));
+        return trim(sprintf('%s expected:<%s> but was:<%s>',
+            $message, $fExpected ?? 'null', $fActual ?? 'null'));
     }
 
-    function substring(string $str, int $start, int $end = null): string
+    private function substring(string $str, int $start, int $end = null): string
     {
         if ($end !== null) {
             return substr($str, $start, $end - $start);

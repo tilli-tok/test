@@ -53,21 +53,10 @@ class ArgsException extends Exception
      */
     public function errorMessage(): string
     {
-        return match ($this->errorCode) {
-            ErrorCode::OK => throw new Exception($this->errorCode->value),
-            ErrorCode::UNEXPECTED_ARGUMENT => sprintf($this->errorCode->value, $this->errorArgumentId),
-            ErrorCode::MISSING_STRING => sprintf($this->errorCode->value, $this->errorArgumentId),
-            ErrorCode::INVALID_INTEGER => sprintf($this->errorCode->value, $this->errorArgumentId, $this->errorParameter),
-            ErrorCode::MISSING_INTEGER => sprintf($this->errorCode->value, $this->errorArgumentId),
-            ErrorCode::INVALID_DOUBLE => sprintf($this->errorCode->value, $this->errorArgumentId, $this->errorParameter),
-            ErrorCode::MISSING_DOUBLE => sprintf($this->errorCode->value, $this->errorArgumentId),
-            default => '',
-        };
-        /**
-        return sprintf(
-            $this->errorCode->value,
-            $this->errorArgumentId,
-            $this->errorParameter
-        );*/
+         return sprintf(
+             $this->errorCode->value,
+             $this->errorArgumentId,
+             $this->errorParameter
+         );
     }
 }

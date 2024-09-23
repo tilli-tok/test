@@ -1,4 +1,5 @@
 <?php
+
 namespace CleanCode\Listing14;
 
 use Exception;

@@ -70,7 +70,8 @@ class ComparisonCompactorSecond
     {
         return trim(sprintf('%s expected:<%s> but was:<%s>', $msg, $s1 ?? 'null', $s2 ?? 'null'));
     }
-    function substring(string $str, int $start, int $end = null): string
+
+    private function substring(string $str, int $start, int $end = null): string
     {
         if ($end !== null) {
             return substr($str, $start, $end - $start);

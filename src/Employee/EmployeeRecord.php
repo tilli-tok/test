@@ -7,6 +7,5 @@ class EmployeeRecord
 {
     public function __construct(public EmployeeType $type)
     {
-        $this->type = $type;
     }
 }

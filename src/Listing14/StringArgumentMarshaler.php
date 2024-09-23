@@ -12,10 +12,11 @@ class StringArgumentMarshaler implements ArgumentMarshaler
 
     /**
      * @throws ArgsException
+     * {@inheritDoc}
      */
     public function set(ArrayIterator|Iterator $currentArgument): void
     {
-       try {
+        try {
             if (!$currentArgument->valid()) {
                 throw new ArgsException(ErrorCode::MISSING_STRING);
             }
@@ -27,6 +28,7 @@ class StringArgumentMarshaler implements ArgumentMarshaler
         }
 
     }
+
     public function get(): string
     {
         return $this->stringValue;

@@ -130,7 +130,7 @@ class Args
      */
     private function setArgument(?string $argChar): bool
     {
-        if(!$this->marshalers->hasKey($argChar)){
+        if (!$this->marshalers->hasKey($argChar)) {
             return false;
         }
         $m = $this->marshalers->get($argChar);

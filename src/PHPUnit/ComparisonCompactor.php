@@ -52,7 +52,6 @@ class ComparisonCompactor
         }
 
         return $result;
-
     }
 
     private function findCommonPrefix(): void
@@ -95,9 +94,11 @@ class ComparisonCompactor
           $end = min(strlen($this->fExpected) - $this->fSuffix + 1 + $this->fContextLength,
           strlen($this->fExpected));
 
-          return $this->substring($this->fExpected, strlen($this->fExpected) - $this->fSuffix + 1, $end) .
-          (strlen($this->fExpected) - $this->fSuffix + 1 < strlen($this->fExpected) -
-          $this->fContextLength ? self::ELLIPSIS : "");
+          return $this->substring($this->fExpected,
+                  strlen($this->fExpected) - $this->fSuffix + 1,
+                  $end) .
+                  (strlen($this->fExpected) - $this->fSuffix + 1 <
+                  strlen($this->fExpected) - $this->fContextLength ? self::ELLIPSIS : "");
     }
 
     private function areStringsEqual(): bool
@@ -107,10 +108,11 @@ class ComparisonCompactor
 
     private function format(?string $message, ?string $fExpected, ?string $fActual): string
     {
-        return trim(sprintf('%s expected:<%s> but was:<%s>', $message, $fExpected ?? 'null', $fActual ?? 'null'));
+        return trim(sprintf('%s expected:<%s> but was:<%s>',
+            $message, $fExpected ?? 'null', $fActual ?? 'null'));
     }
 
-    function substring(string $str, int $start, int $end = null): string
+    private function substring(string $str, int $start, int $end = null): string
     {
         if ($end !== null) {
             return substr($str, $start, $end - $start);

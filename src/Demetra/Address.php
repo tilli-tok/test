@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace CleanCode\Demetra;
 
-
 readonly class Address
 {
-
     public function __construct(
         private string  $street,
         private ?string $streetExtra,

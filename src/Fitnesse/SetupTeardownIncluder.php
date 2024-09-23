@@ -152,7 +152,7 @@ class SetupTeardownIncluder
     /**
      * @throws Exception
      * */
-    private function findInheritedPage(string $pageName): ?WikiPage
+    private function findInheritedPage($pageName): ?WikiPage
     {
         return PageCrawlerImpl::getInheritedPage($pageName);
     }

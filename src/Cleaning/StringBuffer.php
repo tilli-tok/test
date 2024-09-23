@@ -1,6 +1,6 @@
 <?php
 
-namespace CleanCode\Listing14;
+namespace CleanCode\Cleaning;
 
 use Stringable;
 

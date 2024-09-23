@@ -1,4 +1,5 @@
 <?php
+
 namespace CleanCode\Listing14;
 
 use Iterator;
@@ -10,6 +11,7 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
 
     /**
      * @throws ArgsException
+     * {@inheritDoc}
      */
     public function set(Iterator $currentArgument): void
     {
@@ -26,6 +28,10 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
             throw new ArgsException(errorCode: ErrorCode::INVALID_INTEGER, errorParameter: $parameter);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
     public function get(): int
     {
         return $this->intValue;

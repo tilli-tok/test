@@ -1,4 +1,5 @@
 <?php
+
 namespace CleanCode\Listing14;
 
 use Iterator;
@@ -9,8 +10,8 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
 
     /**
      * @throws ArgsException
+     * {@inheritDoc}
      */
-
     public function set(Iterator $currentArgument): void
     {
         $parameter = $currentArgument->current();
@@ -26,10 +27,13 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
             $this->doubleValue = (float)$parameter;
             $currentArgument->next();
         } catch (NumberFormatException) {
-            throw new ArgsException(errorCode: ErrorCode::INVALID_DOUBLE, errorParameter:$parameter);
+            throw new ArgsException(errorCode: ErrorCode::INVALID_DOUBLE, errorParameter: $parameter);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function get(): float
     {
         return $this->doubleValue;

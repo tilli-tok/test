@@ -5,8 +5,8 @@ namespace CleanCode\Fitnesse;
 
 class PageCrawlerImpl
 {
-    public static function getInheritedPage(): ?WikiPage
+    public static function getInheritedPage($page): ?WikiPage
     {
-        return new WikiPage();
+        return $page;
     }
 }

@@ -45,13 +45,10 @@ class IntermediateVersion
 
     private function compactString(string $source): string
     {
-        $start = $this->prefixLength;
         $length = strlen($source) - $this->suffixLength;
 
-        $subst = $this->substring($source, $start, $length);
-
         $result = self::DELTA_START .
-            $subst .
+            $this->substring($source, $this->prefixLength, $length) .
             self::DELTA_END;
 
         if ($this->prefixLength > 0) {
@@ -135,7 +132,7 @@ class IntermediateVersion
             $message, $fExpected ?? 'null', $fActual ?? 'null'));
     }
 
-    function substring(string $str, int $start, int $end = null): string
+    private function substring(string $str, int $start, int $end = null): string
     {
         if ($end !== null) {
             return substr($str, $start, $end - $start);
