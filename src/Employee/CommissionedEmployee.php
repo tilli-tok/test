@@ -5,6 +5,7 @@ namespace CleanCode\Employee;
 
 class CommissionedEmployee extends Employee
 {
+
     public function __construct(EmployeeRecord $r)
     {
     }

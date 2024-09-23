@@ -8,6 +8,7 @@ class ComparisonCompactor
     private const ELLIPSIS = "...";
     private const DELTA_END = "]";
     private const DELTA_START = "[";
+
     private int $fPrefix = 0;
     private int $fSuffix = 0;
 
@@ -82,23 +83,23 @@ class ComparisonCompactor
 
     private function computeCommonPrefix(): string
     {
-          return ($this->fPrefix > $this->fContextLength ? self::ELLIPSIS : "") .
-              $this->substring($this->fExpected,
-                  max(0, $this->fPrefix - $this->fContextLength),
-                  $this->fPrefix);
+        return ($this->fPrefix > $this->fContextLength ? self::ELLIPSIS : "") .
+            $this->substring($this->fExpected,
+                max(0, $this->fPrefix - $this->fContextLength),
+                $this->fPrefix);
 
     }
 
     private function computeCommonSuffix(): string
     {
-          $end = min(strlen($this->fExpected) - $this->fSuffix + 1 + $this->fContextLength,
-          strlen($this->fExpected));
+        $end = min(strlen($this->fExpected) - $this->fSuffix + 1 + $this->fContextLength,
+            strlen($this->fExpected));
 
-          return $this->substring($this->fExpected,
-                  strlen($this->fExpected) - $this->fSuffix + 1,
-                  $end) .
-                  (strlen($this->fExpected) - $this->fSuffix + 1 <
-                  strlen($this->fExpected) - $this->fContextLength ? self::ELLIPSIS : "");
+        return $this->substring($this->fExpected,
+                strlen($this->fExpected) - $this->fSuffix + 1,
+                $end) .
+            (strlen($this->fExpected) - $this->fSuffix + 1 <
+            strlen($this->fExpected) - $this->fContextLength ? self::ELLIPSIS : "");
     }
 
     private function areStringsEqual(): bool

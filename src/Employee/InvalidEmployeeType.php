@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace CleanCode\Employee;
+
 use Exception;
 
 class InvalidEmployeeType extends Exception

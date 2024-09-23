@@ -8,6 +8,7 @@ class PrimePrinter
     private const NUMBER_OF_PRIMES = 1000;
     private const ROWS_PER_PAGE = 50;
     private const COLUMNS_PER_PAGE = 4;
+
     public static function main(): void
     {
         $primes = PrimeGenerator::generate(self::NUMBER_OF_PRIMES);

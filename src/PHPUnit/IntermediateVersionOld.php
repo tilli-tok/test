@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace CleanCode\PHPUnit;
 
 class IntermediateVersionOld
-
 {
     private const ELLIPSIS = "...";
     private const DELTA_END = "]";
     private const DELTA_START = "[";
+    
     private int $suffixIndex = 0;
     private string $compactExpected;
     private string $compactActual;

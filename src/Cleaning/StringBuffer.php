@@ -2,9 +2,7 @@
 
 namespace CleanCode\Cleaning;
 
-use Stringable;
-
-class StringBuffer implements Stringable
+class StringBuffer implements \Stringable
 {
     private string $buffer = '';
 

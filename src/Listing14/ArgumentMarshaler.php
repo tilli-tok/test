@@ -12,8 +12,5 @@ interface ArgumentMarshaler
      */
     public function set(Iterator $currentArgument): void;
 
-    /**
-     * @return mixed
-     */
     public function get(): mixed;
 }

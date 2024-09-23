@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace CleanCode\Classes;
 
-class PrintStream
+readonly class PrintStream
 {
-    private $printStream;
 
-    public function __construct($printStream = STDOUT)
+    public function __construct(private false $printStream = STDOUT)
     {
-        $this->printStream = $printStream;
     }
 
     public function println(string $data): void

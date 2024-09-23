@@ -15,13 +15,16 @@ class Args
     private int $currentArgument = 0;
     private string $errorArgumentId = '\0';
     private string $errorParameter = 'TILT';
-    private \CleanCode\Listing14\ErrorCode $errorCode;
+    private ErrorCode $errorCode;
 
+    /**
+     * @throws Exception
+     */
     public function __construct(string $schema, array $args)
     {
         $this->schema = $schema;
         $this->args = $args;
-        $this->errorCode = \CleanCode\Listing14\ErrorCode::OK;
+        $this->errorCode = ErrorCode::OK;
         $this->valid = $this->parse();
     }
 
@@ -42,7 +45,10 @@ class Args
         return $this->valid;
     }
 
-    private function parseSchema(): bool
+    /**
+     * @throws Exception
+     */
+    private function parseSchema(): void
     {
         foreach (explode(',', $this->schema) as $element) {
             if (!empty($element)) {
@@ -50,9 +56,11 @@ class Args
                 $this->parseSchemaElement($trimmedElement);
             }
         }
-        return true;
     }
 
+    /**
+     * @throws Exception
+     */
     private function parseSchemaElement(string $element): void
     {
         $elementId = $element[0];
@@ -116,6 +124,9 @@ class Args
         return true;
     }
 
+    /**
+     * @throws Exception
+     */
     private function parseArgument(string $arg): void
     {
         if (str_starts_with($arg, '-')) {
@@ -123,6 +134,9 @@ class Args
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private function parseElements(string $arg): void
     {
         for ($i = 1; $i < strlen($arg); $i++) {
@@ -130,6 +144,9 @@ class Args
         }
     }
 
+    /**
+     * @throws ArgsException
+     */
     private function parseElement(string $argChar): void
     {
         if ($this->setArgument($argChar)) {
@@ -175,7 +192,7 @@ class Args
         if ($parameter === null) {
             $this->valid = false;
             $this->errorArgumentId = $argChar;
-            $this->errorCode = \CleanCode\Listing14\ErrorCode::MISSING_INTEGER;
+            $this->errorCode = ErrorCode::MISSING_INTEGER;
             throw new ArgsException();
         }
 
@@ -183,7 +200,7 @@ class Args
             $this->valid = false;
             $this->errorArgumentId = $argChar;
             $this->errorParameter = $parameter;
-            $this->errorCode = \CleanCode\Listing14\ErrorCode::INVALID_INTEGER;
+            $this->errorCode = ErrorCode::INVALID_INTEGER;
             throw new ArgsException();
         }
 
@@ -199,8 +216,8 @@ class Args
         if (!isset($this->args[$this->currentArgument])) {
             $this->valid = false;
             $this->errorArgumentId = $argChar;
-            $this->errorCode = \CleanCode\Listing14\ErrorCode::MISSING_STRING;
-            throw new ArgsException();
+            $this->errorCode = ErrorCode::MISSING_STRING;
+            throw new ArgsException($this->errorCode);
         }
 
         $this->stringArgs[$argChar] = $this->args[$this->currentArgument];

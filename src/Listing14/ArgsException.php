@@ -38,6 +38,9 @@ class ArgsException extends Exception
         $this->errorParameter = $errorParameter;
     }
 
+    /**
+     * @return ErrorCode
+     */
     public function getErrorCode(): ErrorCode
     {
         return $this->errorCode;

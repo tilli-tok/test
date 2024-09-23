@@ -8,6 +8,7 @@ class ComparisonCompactorChange
     private const ELLIPSIS = "...";
     private const DELTA_END = "]";
     private const DELTA_START = "[";
+
     private int $prefixLength = 0;
     private int $suffixLength = 0;
 

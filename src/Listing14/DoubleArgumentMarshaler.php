@@ -31,9 +31,6 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function get(): float
     {
         return $this->doubleValue;

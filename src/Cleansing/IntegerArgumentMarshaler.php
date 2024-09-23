@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace CleanCode\Cleansing;
 
 use Iterator;
@@ -10,8 +11,6 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
     private int $intValue = 0;
 
     /**
-     * @param Iterator $currentArgument
-     * @return void
      * @throws ArgsException
      */
     public function set(Iterator $currentArgument): void
@@ -40,7 +39,7 @@ class IntegerArgumentMarshaler implements ArgumentMarshaler
     {
         if ($am instanceof IntegerArgumentMarshaler) {
             return $am->intValue;
-        }else {
+        } else {
             return 0;
         }
     }

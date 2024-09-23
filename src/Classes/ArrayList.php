@@ -33,6 +33,9 @@ class ArrayList implements IteratorAggregate, Countable
         return count($this->elements);
     }
 
+    /**
+     * @return Traversable
+     */
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->elements);

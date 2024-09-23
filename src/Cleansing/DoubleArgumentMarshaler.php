@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace CleanCode\Cleansing;
 
 use ArrayIterator;
@@ -16,7 +17,6 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
     }
 
     /**
-     * @param ArrayIterator|Iterator $currentArgument
      * @throws ArgsException
      */
     public function set(ArrayIterator|Iterator $currentArgument): void
@@ -44,11 +44,13 @@ class DoubleArgumentMarshaler implements ArgumentMarshaler
     {
         return $this->doubleValue;
     }
-    public function getDouble(string $arg): float {
+
+    public function getDouble(string $arg): float
+    {
         $am = $this->marshalers[$arg] ?? null;
 
         try {
-            return $am === null ? 0.0 : (float) $am->get();
+            return $am === null ? 0.0 : (float)$am->get();
         } catch (Exception) {
             return 0.0;
         }

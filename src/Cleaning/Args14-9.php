@@ -2,7 +2,7 @@
 declare(strict_types=1);
 //namespace CleanCode\Cleaning;
 
-use CleanCode\Cleaning\StringBuffer;
+#use CleanCode\Cleaning\StringBuffer;
 
 class Args
 {
@@ -14,7 +14,7 @@ class Args
     private int $numberOfArguments = 0;
 
     /**
-     * @throws ParseException
+     * @throws Exception
      */
     public function __construct(string $schema, array $args)
     {
@@ -45,7 +45,7 @@ class Args
     }
 
     /**
-     * @throws ParseException
+     * @throws Exception
      */
     private function parseSchema(): void
     {
@@ -72,18 +72,17 @@ class Args
     }
 
     /**
-     * @throws ArgsException
+     * @throws Exception
      */
-    private function parseArguments(): bool
+    private function parseArguments(): void
     {
         foreach ($this->args as $arg) {
             $this->parseArgument($arg);
         }
-        return true;
     }
 
     /**
-     * @throws ArgsException
+     * @throws Exception
      */
     private function parseArgument(string $arg): void
     {
@@ -93,7 +92,7 @@ class Args
     }
 
     /**
-     * @throws ArgsException
+     * @throws Exception
      */
     private function parseElements(string $arg): void
     {

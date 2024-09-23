@@ -30,6 +30,9 @@ readonly class RowColumnPagePrinter
         }
     }
 
+    /**
+     * @param int[] $data
+     */
     private function printPage(int $firstIndexOnPage, int $lastIndexOnPage, array $data): void
     {
         $firstIndexOfLastRowOnPage = $firstIndexOnPage + $this->rowsPerPage - 1;
@@ -39,6 +42,9 @@ readonly class RowColumnPagePrinter
         }
     }
 
+    /**
+     * @param int[] $data
+     */
     private function printRow(int $firstIndexInRow, int $lastIndexOnPage, array $data): void
     {
         for ($column = 0; $column < $this->columnsPerPage; $column++) {

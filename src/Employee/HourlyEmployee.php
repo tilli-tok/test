@@ -14,6 +14,9 @@ class HourlyEmployee extends Employee
         return true;
     }
 
+    /**
+     * @return Money
+     */
     public function calculatePay(): Money
     {
         return new Money(300);

@@ -1,27 +1,19 @@
 <?php
 declare(strict_types=1);
+
 namespace CleanCode\Cleansing;
 
 use Exception;
 
-class ArgsException extends Exception {
 
-    private string $errorArgumentId = "\0";
-    /** @var string|null */
-    private ?string $errorParameter = null;
-    private ErrorCode $errorCode;
+class ArgsException extends Exception
+{
 
-    /**
-     * @param ErrorCode $errorCode
-     * @param string|null $errorArgumentId
-     * @param string|null $errorParameter
-     */
-
-    public function __construct(ErrorCode $errorCode, ?string $errorArgumentId = null, ?string $errorParameter = null)
+    public function __construct(private ErrorCode $errorCode,
+                                private string    $errorArgumentId = "\0",
+                                private ?string   $errorParameter = null
+    )
     {
-        $this->errorCode = $errorCode;
-        $this->errorParameter = $errorParameter;
-        $this->errorArgumentId = $errorArgumentId;
         parent::__construct($this->errorMessage());
     }
 
@@ -55,7 +47,8 @@ class ArgsException extends Exception {
         $this->errorCode = $errorCode;
     }
 
-    public function errorMessage(): string {
+    public function errorMessage(): string
+    {
         return match ($this->errorCode) {
             ErrorCode::OK => "TILT: Should not get here.",
             ErrorCode::UNEXPECTED_ARGUMENT => sprintf("Argument -%c unexpected.", $this->errorArgumentId),

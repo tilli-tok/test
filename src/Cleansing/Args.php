@@ -1,22 +1,32 @@
 <?php
 declare(strict_types=1);
+
 namespace CleanCode\Cleansing;
 
 use ArrayIterator;
 
+use Ds\Map;
+use Ds\Set;
+
 class Args
 {
-    private array $marshalers= [];
-    private array $argsFound = [];
+    /**
+     * @param Map<string, ArgumentMarshaler> $marshalers
+     * @param Set<string> $argsFound
+     */
+    private Map $marshalers;
+    private Set $argsFound;
     private ArrayIterator $currentArgument;
 
     /**
+     * @param string $schema
      * @throws ArgsException
+     * @var string[] $args
      */
     public function __construct(string $schema, array $args)
     {
-        //$this->marshalers = new ArgumentMarshaler();
-        //$this->args = $args;
+        $this->marshalers = new Map();
+        $this->argsFound = new Set();
         $this->currentArgument = new ArrayIterator($args);
         $this->parseSchema($schema);
         $this->parseArgumentStrings($args);
@@ -36,8 +46,6 @@ class Args
     }
 
     /**
-     * @param string $element
-     * @return void
      * @throws ArgsException
      */
     private function parseSchemaElement(string $element): void
@@ -47,18 +55,16 @@ class Args
         $this->validateSchemaElementId($elementId);
 
         $this->marshalers[$elementId] = match ($elementTail) {
-            ''      => new BooleanArgumentMarshaler(),
-            '*'     => new StringArgumentMarshaler(),
-            '#'     => new IntegerArgumentMarshaler(),
-            '##'    => new DoubleArgumentMarshaler(),
-            '[*]'   => new StringArrayArgumentMarshaler(),
+            '' => new BooleanArgumentMarshaler(),
+            '*' => new StringArgumentMarshaler(),
+            '#' => new IntegerArgumentMarshaler(),
+            '##' => new DoubleArgumentMarshaler(),
+            '[*]' => new StringArrayArgumentMarshaler(),
             default => throw new ArgsException(ErrorCode::INVALID_ARGUMENT_FORMAT, $elementId, null)
         };
     }
 
     /**
-     * @param string $elementId
-     * @return void
      * @throws ArgsException
      */
     private function validateSchemaElementId(string $elementId): void
@@ -96,8 +102,6 @@ class Args
     }
 
     /**
-     * @param string $argChar
-     * @return void
      * @throws ArgsException
      */
     private function parseArgumentCharacter(string $argChar): void
@@ -118,7 +122,7 @@ class Args
 
     public function has(string $arg): bool
     {
-        return in_array($arg, $this->argsFound, true);
+        return in_array($arg, (array)$this->argsFound, true);
     }
 
     public function nextArgument(): int

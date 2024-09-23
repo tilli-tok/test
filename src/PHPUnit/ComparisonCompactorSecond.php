@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace CleanCode\PHPUnit;
 
 class ComparisonCompactorSecond
@@ -19,13 +20,13 @@ class ComparisonCompactorSecond
 
     public function compact(string $msg): string
     {
-        if ($this->s1 === null || $this->s2 === null  || $this->areStringsEqual()) {
+        if ($this->s1 === null || $this->s2 === null || $this->areStringsEqual()) {
             return $this->format($msg, $this->s1, $this->s2);
         }
 
         $this->pfx = 0;
-        for (; $this->pfx < min(strlen($this->s1),strlen($this->s2)); $this->pfx++) {
-            if($this->s1[$this->pfx] !== $this->s2[$this->pfx]){
+        for (; $this->pfx < min(strlen($this->s1), strlen($this->s2)); $this->pfx++) {
+            if ($this->s1[$this->pfx] !== $this->s2[$this->pfx]) {
                 break;
             }
         }
@@ -33,8 +34,8 @@ class ComparisonCompactorSecond
         $sfx1 = strlen($this->s1) - 1;
         $sfx2 = strlen($this->s2) - 1;
 
-        for (; $sfx2 >= $this->pfx && $sfx1 >= $this->pfx;$sfx1--,$sfx2--){
-            if($this->s1[$sfx1] !== $this->s2[$sfx2]) {
+        for (; $sfx2 >= $this->pfx && $sfx1 >= $this->pfx; $sfx1--, $sfx2--) {
+            if ($this->s1[$sfx1] !== $this->s2[$sfx2]) {
                 break;
             }
         }

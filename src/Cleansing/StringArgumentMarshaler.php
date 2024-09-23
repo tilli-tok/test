@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace CleanCode\Cleansing;
 
 use Iterator;
@@ -10,8 +11,6 @@ class StringArgumentMarshaler implements ArgumentMarshaler
     private string $stringValue = '';
 
     /**
-     * @param Iterator $currentArgument
-     * @return void
      * @throws ArgsException
      */
     public function set(Iterator $currentArgument): void
@@ -28,7 +27,7 @@ class StringArgumentMarshaler implements ArgumentMarshaler
     {
         if ($am instanceof StringArgumentMarshaler) {
             return $am->stringValue;
-        }else{
+        } else {
             return '';
         }
     }

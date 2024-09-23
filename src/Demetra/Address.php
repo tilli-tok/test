@@ -5,6 +5,7 @@ namespace CleanCode\Demetra;
 
 readonly class Address
 {
+
     public function __construct(
         private string  $street,
         private ?string $streetExtra,

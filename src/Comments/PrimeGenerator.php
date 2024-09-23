@@ -14,14 +14,17 @@ namespace CleanCode\Comments;
 class PrimeGenerator
 {
     /**
-     * @var boolean[]
+     * @var boolean[] $crossedOut
      */
     private static array $crossedOut = [];
     /**
-     * @var int[]
+     * @var int[] $result
      */
     private static array $result = [];
 
+    /**
+     * @return array|int[]
+     */
     public static function generatePrimes(int $maxValue): array
     {
         if ($maxValue < 2) {

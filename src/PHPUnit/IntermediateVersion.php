@@ -9,6 +9,7 @@ class IntermediateVersion
     private const ELLIPSIS = "...";
     private const DELTA_END = "]";
     private const DELTA_START = "[";
+
     private string $compactExpected;
     private string $compactActual;
     private int $prefixLength = 0;

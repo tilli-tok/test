@@ -5,9 +5,19 @@ namespace CleanCode\Classes;
 
 class PrimeGenerator
 {
+    /**
+     * @var int[] $primes
+     */
     private static array $primes = [];
+    /**
+     * @var IntegerArrayList<int>
+     */
     private static IntegerArrayList $multiplesOfPrimeFactors;
 
+    /**
+     * @param int $n
+     * @return int[]
+     */
     public static function generate(int $n): array
     {
         self::$primes = array_fill(0, $n, 0);

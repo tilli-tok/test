@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace CleanCode\Fitnesse;
 
-class StringBuffer
+class StringBuffer extends \Stringable
 {
     private string $buffer = '';
 
