@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace CleanCode\Classes;
 
-readonly class PrintStream
+class PrintStream
 {
 
-    public function __construct(private false $printStream = STDOUT)
+    public function __construct(private $printStream = STDOUT)
     {
     }
 
